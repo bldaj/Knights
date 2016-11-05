@@ -15,11 +15,11 @@ class MainMenu():
             exit()
 
     def new_game(self):
-        print('IntroIntroIntro')
         name = input('Enter your name: ')
-        protagonist = Character().create_protagonist(name)
-        enemy = Character().create_enemy('Knight1')
-        protagonist, enemy = Battle(protagonist, enemy).battle()
+        protagonist = CreateCharacter().protagonist(name)
+        enemy = CreateCharacter().enemy('Knight 1')
+        battle = Battle(protagonist, enemy)
+        battle.battle()
 
     def load_game(self):
         pass
@@ -90,21 +90,14 @@ class Battle():
         return self.protagonist, self.enemy
 
 
-class City():
-    print('You are in the city.\n'
-          '[1]: Trader\n'
-          '[2]: ')
-
-
-class Character():
-    def create_protagonist(self, name):
+class CreateCharacter():
+    def protagonist(self, name):
         protagonist = {'name': name, 'health': 100, 'energy': 100}
         return protagonist
 
-    def create_enemy(self, name):
+    def enemy(self, name):
         enemy = {'name': name, 'health': 50, 'energy': 50}
         return enemy
-
 
 main_menu = MainMenu()
 main_menu.handler(input('Make your choice: '))
