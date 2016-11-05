@@ -9,17 +9,17 @@ class MainMenu():
             self.new_game()
         elif cmd == '2':
             self.load_game()
-        elif cmd == 3:
+        elif cmd == '3':
             self.save_game()
         elif cmd == '4':
             exit()
 
     def new_game(self):
         name = input('Enter your name: ')
-        protagonist = CreateCharacter().protagonist(name)
-        enemy = CreateCharacter().enemy('Knight 1')
-        battle = Battle(protagonist, enemy)
-        battle.battle()
+        protagonist = Character().create_protagonist(name)
+        enemy = Character().create_enemy('Knight 1')
+        protagonist = Battle(protagonist, enemy)
+        protagonist.battle()
 
     def load_game(self):
         pass
@@ -42,24 +42,29 @@ class Battle():
         cmd = random.choice(['1', '2', '3'])
 
         if cmd == '1':
-            print('{} has hit you to the head!'.format(self.enemy['name']))
+            print('{} has hit you to the head!\n'.format(self.enemy['name']))
             self.protagonist['health'] -= 50
             self.enemy['energy'] -= 30
+            self.battle_info()
         elif cmd == '2':
-            print('{} has hit you to the body!'.format(self.enemy['name']))
+            print('{} has hit you to the body!\n'.format(self.enemy['name']))
             self.protagonist['health'] -= 30
             self.enemy['energy'] -= 25
+            self.battle_info()
         elif cmd == '3':
-            print('{} has hit you to the legs!'.format(self.enemy['name']))
+            print('{} has hit you to the legs!\n'.format(self.enemy['name']))
             self.protagonist['health'] -= 20
             self.enemy['energy'] -= 15
+            self.battle_info()
 
         return self.enemy, self.protagonist
 
     def battle(self):
         print('\nBattle is running!')
+        battle = True
         self.battle_info()
-        while self.enemy['health'] is not 0:
+
+        while battle:
             print('[1]: Hit to the head (50 dmg/30 energy)\n'
                   '[2]: Hit to the body (30 dmg/25 energy)\n'
                   '[3]: Hit to the legs (20 dmg/15 energy)')
@@ -78,24 +83,30 @@ class Battle():
                 self.protagonist['energy'] -= 15
                 self.battle_info()
 
-            if self.enemy['health'] is 0:
-                print('You win')
-                break
-            elif self.protagonist['health'] is 0:
-                print('You lose')
+            battle = self.is_game_over(battle)
+            if not battle:
                 break
 
             self.enemy, self.protagonist = self.enemy_attack()
 
-        return self.protagonist, self.enemy
+        return self.protagonist
 
+    def is_game_over(self, battle_flag):
+        if self.protagonist['health'] <= 0:
+            battle_flag = False
+            print('YOU LOSE')
+        elif self.enemy['health'] <= 0:
+            print('YOU WIN')
+            battle_flag = False
 
-class CreateCharacter():
-    def protagonist(self, name):
+        return battle_flag
+
+class Character():
+    def create_protagonist(self, name):
         protagonist = {'name': name, 'health': 100, 'energy': 100}
         return protagonist
 
-    def enemy(self, name):
+    def create_enemy(self, name):
         enemy = {'name': name, 'health': 50, 'energy': 50}
         return enemy
 
