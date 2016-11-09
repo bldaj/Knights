@@ -1,36 +1,46 @@
 import random
+import pickle
 
 
 class StartGame():
+    def __init__(self, hero=None):
+        self.hero = hero
 
     def main_menu(self):
-        print('[1]: New game\n[2]: Load game\n[3]: Save game\n[4]: Exit')
+        print('[1]: New game\n'
+              '[2]: Load game\n'
+              '[3]: Save game\n'
+              '[4]: Exit')
         cmd = input('Make your choice: ')
 
         if cmd == '1':
             hero = self.new_game()
             return hero
         elif cmd == '2':
-            self.load_game()
+            hero = self.load_game()
+            return hero
         elif cmd == '3':
-            self.save_game()
+            self.save_game(self.hero)
         elif cmd == '4':
             exit()
 
     def new_game(self):
         name = input('Enter your name: ')
-        hero = Character().create_character(name, 100, 100)
-        enemy = Character().create_character('Knight_1', 60, 50)
+        hero = Character().create_character(name, 100, 100, 0, 100)
+        enemy = Character().create_character('Knight_1', 60, 50, 100, 20)
 
         hero = Game().battle(hero, enemy)
 
         return hero
 
     def load_game(self):
-        pass
+        save = open('save.txt', 'rb')
+        return pickle.load(save)
 
-    def save_game(self):
-        pass
+    def save_game(self, character):
+        save = open('save.txt', 'wb')
+        pickle.dump(character, save)
+        save.close()
 
 
 class Game():
@@ -38,9 +48,9 @@ class Game():
     def battle(self, hero, enemy):
         print('\n{:>28}\n{:>17} {:>2} {:>3}'.format('BATTLE IS RUNNING', hero['name'], 'VS', enemy['name']))
         self.battle_info(hero, enemy)
-        battle = True
+        winner = ''
 
-        while battle:
+        while True:
             print('[1]: Hit to the head (50 dmg/30 energy)\n'
                   '[2]: Hit to the body (30 dmg/25 energy)\n'
                   '[3]: Hit to the legs (20 dmg/15 energy)')
@@ -56,8 +66,14 @@ class Game():
                 enemy['health'] -= 20
                 hero['energy'] -= 15
 
-            battle = self.is_game_over(battle, hero, enemy)
-            if battle is False:
+            winner = self.determine_winner(winner, hero, enemy)
+            if winner is hero['name']:
+                hero['exp'] += enemy['exp']
+                hero['gold'] += enemy['gold']
+                print('{:>22}'.format('YOU WIN'))
+                break
+            elif winner is enemy['name']:
+                print('{:>22}'.format('YOU LOSE'))
                 break
 
             hero, enemy = self.enemy_attack(hero, enemy)
@@ -65,7 +81,7 @@ class Game():
         return hero
 
     def enemy_attack(self, hero, enemy):
-        cmd = random.choice(['1', '2', '3'])
+        cmd = random.choice(['1'])
 
         if cmd == '1':
             print('\n{} has hit you to the head!\n'.format(enemy['name']))
@@ -90,15 +106,13 @@ class Game():
                                                   'Your health: ', hero['health'],
                                                   'Your energy: ', hero['energy']))
 
-    def is_game_over(self, battle_flag, hero, enemy):
+    def determine_winner(self, winner, hero, enemy):
         if hero['health'] <= 0:
-            battle_flag = False
-            print('{:>22}'.format('YOU LOSE'))
+            winner = '{}'.format(enemy['name'])
         elif enemy['health'] <= 0:
-            print('{:>22}'.format('YOU WIN'))
-            battle_flag = False
+            winner = '{}'.format(hero['name'])
 
-        return battle_flag
+        return winner
 
 
 class City():
@@ -107,19 +121,26 @@ class City():
 
     def menu(self):
         print('\n{:>28}'.format("You're in the city"))
-        print('[1]: Main menu\n[2]: Trader\n[3]: Armory\n[4]: Blacksmith\n[5]: Arena')
+        print('[1]: Main menu\n'
+              '[2]: Info\n'
+              '[3]: Trader\n'
+              '[4]: Armory\n'
+              '[5]: Blacksmith\n'
+              '[6]: Arena')
         cmd = input('Make your choice: ')
 
         if cmd == '1':
             print('\n')
-            StartGame().main_menu()
+            self.hero = StartGame(self.hero).main_menu()
         elif cmd == '2':
-            self.trader()
+            Character().info(hero)
         elif cmd == '3':
-            self.armory()
+            self.trader()
         elif cmd == '4':
-            self.blacksmith()
+            self.armory()
         elif cmd == '5':
+            self.blacksmith()
+        elif cmd == '6':
             pass
 
     def trader(self, hero):
@@ -133,10 +154,14 @@ class City():
 
 
 class Character():
-    def create_character(self, name, health, energy):
-        character = {'name': name, 'health': health, 'energy': energy}
+    def create_character(self, name, health, energy, exp, gold):
+        character = {'name': name, 'health': health, 'energy': energy,
+                     'exp': exp, 'gold': gold}
 
         return character
+
+    def info(self, character):
+        print(character)
 
 hero = StartGame().main_menu()
 City(hero).menu()
