@@ -81,7 +81,7 @@ class Game():
         return hero
 
     def enemy_attack(self, hero, enemy):
-        cmd = random.choice(['1'])
+        cmd = random.choice(['1', '2', '3'])
 
         if cmd == '1':
             print('\n{} has hit you to the head!\n'.format(enemy['name']))
