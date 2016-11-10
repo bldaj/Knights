@@ -26,8 +26,8 @@ class StartGame():
 
     def new_game(self):
         name = input('Enter your name: ')
-        hero = Character().create_character(name, 100, 100, 0, 100)
-        enemy = Character().create_character('Knight_1', 60, 50, 100, 20)
+        hero = Character().create_character(0, name, 100, 100, 0, 100)
+        enemy = Game().choose_enemy()
 
         hero = Game().battle(hero, enemy)
 
@@ -44,6 +44,23 @@ class StartGame():
 
 
 class Game():
+
+    def choose_enemy(self):
+        enemies = Character().enemies_list()
+        print('\n{:^30}'.format('Enemies'))
+
+        for i in range(0, 3):
+            print('[{}]: {}'.format(enemies[i]['id'], enemies[i]['name']))
+        cmd = input('Choose your enemy: ')
+
+        if cmd is '1':
+            enemy = enemies[0]
+        elif cmd is '2':
+           enemy = enemies[1]
+        elif cmd is '3':
+           enemy = enemies[2]
+
+        return enemy
 
     def battle(self, hero, enemy):
         print('\n{:>28}\n{:>17} {:>2} {:>3}'.format('BATTLE IS RUNNING', hero['name'], 'VS', enemy['name']))
@@ -120,28 +137,29 @@ class City():
         self.hero = hero
 
     def menu(self):
-        print('\n{:>28}'.format("You're in the city"))
-        print('[1]: Main menu\n'
-              '[2]: Info\n'
-              '[3]: Trader\n'
-              '[4]: Armory\n'
-              '[5]: Blacksmith\n'
-              '[6]: Arena')
-        cmd = input('Make your choice: ')
+        while True:
+            print('\n{:>28}'.format("You're in the city"))
+            print('[1]: Main menu\n'
+                  '[2]: Info\n'
+                  '[3]: Trader\n'
+                  '[4]: Armory\n'
+                  '[5]: Blacksmith\n'
+                  '[6]: Arena')
+            cmd = input('Make your choice: ')
 
-        if cmd == '1':
-            print('\n')
-            self.hero = StartGame(self.hero).main_menu()
-        elif cmd == '2':
-            Character().info(hero)
-        elif cmd == '3':
-            self.trader()
-        elif cmd == '4':
-            self.armory()
-        elif cmd == '5':
-            self.blacksmith()
-        elif cmd == '6':
-            pass
+            if cmd == '1':
+                print('\n')
+                self.hero = StartGame(self.hero).main_menu()
+            elif cmd == '2':
+                Character().info(hero)
+            elif cmd == '3':
+                self.trader()
+            elif cmd == '4':
+                self.armory()
+            elif cmd == '5':
+                self.blacksmith()
+            elif cmd == '6':
+                pass
 
     def trader(self, hero):
         pass
@@ -154,14 +172,27 @@ class City():
 
 
 class Character():
-    def create_character(self, name, health, energy, exp, gold):
-        character = {'name': name, 'health': health, 'energy': energy,
+    def create_character(self, id, name, health, energy, exp, gold):
+        character = {'id': id, 'name': name, 'health': health, 'energy': energy,
                      'exp': exp, 'gold': gold}
 
         return character
 
     def info(self, character):
         print(character)
+
+    def enemies_list(self):
+        enemies = []
+
+        knight_1 = self.create_character(1, 'Knight_1', 60, 100, 100, 20)
+        knight_2 = self.create_character(2, 'Knight_2', 80, 100, 150, 30)
+        knight_3 = self.create_character(3, 'Knight_3', 120, 100, 250, 50)
+
+        enemies.append(knight_1)
+        enemies.append(knight_2)
+        enemies.append(knight_3)
+
+        return enemies
 
 hero = StartGame().main_menu()
 City(hero).menu()
