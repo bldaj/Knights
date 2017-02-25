@@ -9,7 +9,7 @@ class Game():
               '[3]: Save game\n'
               '[4]: Exit game')
 
-        cmd = self.make_choice()
+        cmd = input('Make your choice: ')
 
         if cmd == '1':
             hero = self.new_game()
@@ -28,12 +28,11 @@ class Game():
     def new_game(self):
         print('\nVERY GREATEST STORY...and his name is...')
         name = ''
-        global MAX_HEALTH
 
         while name == '':
             name = input("Enter hero's name: ")
 
-        hero = Character().create_character(name, MAX_HEALTH, 100, 0, 0, '1')
+        hero = self.create_character(name, 100, 100, 0, 0, '1', 100, 100)
         hero['tutorial'] = False    # it means that tutorial is not solved
         return hero
 
@@ -43,31 +42,36 @@ class Game():
             return hero
 
     def save_game(self, hero):
-        with open('save.pickle', 'wb') as f:
-            pickle.dump(hero, f)
-
-    def make_choice(self):
-        cmd = input('Make your choice: ')
-        return cmd
+        if hero is None:
+            print("\nYou haven't hero to save\n")
+            self.main_menu()
+        else:
+            with open('save.pickle', 'wb') as f:
+                pickle.dump(hero, f)
 
     def battle(self, hero, enemy):
         print('\n{:^40}\n{:>17} VS {}\n'.format('Battle Is Running', hero['name'], enemy['name']))
 
         while True:
             self.characters_info(hero, enemy)
+
             print('[1]: To hit in head (40 dmg/20 energy)\n'
                   '[2]: To hit in body (30 dmg/15 energy)\n'
                   '[3]: To hit in legs (20 dmg/15 energy)')
 
+            # hero will first attack and then will check is hero winner
             hero, enemy = self.hero_attack(hero, enemy)
+
             if self.who_is_winner(hero, enemy) == 'Hero':
                 print('\n{:^40}'.format("You're a winner"))
                 hero['exp'] = enemy['exp']
                 hero['gold'] = enemy['gold']
-                hero = Character().level_up(hero)
+                hero = self.level_up(hero)
                 break
 
+            # then enemy will attack and then will check is enemy winner
             hero, enemy = self.enemy_attack(hero, enemy)
+
             if self.who_is_winner(hero, enemy) == 'Enemy':
                 print('\n{:^40}'.format("You're a loser"))
                 break
@@ -75,7 +79,7 @@ class Game():
         return hero
 
     def hero_attack(self, hero, enemy):
-        cmd = self.make_choice()
+        cmd = input('Make your choice: ')
 
         if cmd == '1':
             enemy['health'] -= 40
@@ -93,26 +97,22 @@ class Game():
         return hero, enemy
 
     def enemy_attack(self, hero, enemy):
-        cmd = choice(['1', '2', '3'])
+        cmd = choice([1, 2, 3])
 
-        if cmd == '1':
+        if cmd == 1:
             hero['health'] -= 40
             enemy['energy'] -= 20
             print('\n{} has hit you in head\n'.format(enemy['name']))
-        elif cmd == '2':
+        elif cmd == 2:
             hero['health'] -= 30
             enemy['energy'] -= 15
             print('\n{} has hit you in body\n'.format(enemy['name']))
-        elif cmd == '3':
+        elif cmd == 3:
             hero['health'] -= 20
             enemy['energy'] -= 15
             print('\n{} has hit you in legs\n'.format(enemy['name']))
 
         return hero, enemy
-
-    def characters_info(self, hero, enemy):
-        print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero['health'], 'Your energy', hero['energy'],
-                                                         'Enemy health', enemy['health']))
 
     def who_is_winner(self, hero, enemy):
         if enemy['health'] <= 0:
@@ -120,35 +120,44 @@ class Game():
         elif hero['health'] <= 0:
             return 'Enemy'
 
+    def characters_info(self, hero, enemy):
+        print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero['health'], 'Your energy', hero['energy'],
+                                                         'Enemy health', enemy['health']))
 
-class Character():
-    global MAX_HEALTH
-    MAX_HEALTH = 100
-
-    def create_character(self, name, health, energy, gold, exp, level):
+    def create_character(self, name, health, energy, gold, exp, level, max_health=None, max_energy=None):
         character = {'name': name,
                      'health': health,
                      'energy': energy,
                      'gold': gold,
                      'exp': exp,
-                     'level': level}
+                     'level': level,
+                     'max health': max_health,
+                     'max energy': max_energy}
 
         return character
 
     def enemy_list(self):
+        # this function generates list of enemies
+
         enemies = []
 
         names = ['Villager', 'Farmer', 'Knight']
         healths = [80, 100, 140]
         energies = [100, 100, 100]
+        golds = [20, 30, 50]
+        exps = [50, 70, 150]
+        levels = ['1', '2', '3']
 
         for i in range(3):
-            enemy = self.create_character(names[i], healths[i], energies[i])
+            enemy = self.create_character(names[i], healths[i], energies[i],
+                                          golds[i], exps[i], levels[i])
             enemies.append(enemy)
 
         return enemies
 
     def levels(self):
+        # this function generates dict of available levels in the game
+
         levels = {'1': 0}   # Initialize first level
         exp = 300
         levels['2'] = exp   # 300 experience points need to get second level
@@ -162,16 +171,16 @@ class Character():
     def level_up(self, hero):
         levels = self.levels()
         exp = hero['exp']
-        global MAX_HEALTH
 
         for i in range(2, 13):
             if exp >= levels[str(i)] and exp < levels[str(i+1)]:
                 print('\n{:^40}'.format("LEVEL UP"))
 
-                MAX_HEALTH += 10
                 hero['level'] = str(i)
-                hero['health'] = MAX_HEALTH
-                hero['energy'] += 10
+                hero['max health'] += 10
+                hero['max energy'] += 10
+                hero['health'] = hero['max health']
+                hero['energy'] += hero['max energy']
                 break
 
         return hero
@@ -183,6 +192,31 @@ class Character():
               'Energy: {4} Gold: {5}\n'.format(hero['name'], hero['level'],
                                                hero['health'], hero['exp'],
                                                hero['energy'], hero['gold']))
+
+    def tutorial(self, hero):
+        battle_description = "\nIt's battle place, my hero! You should use command like in the main menu I mean 1, 2, 3.\n" \
+                             "So, you have health and energy. Health you know why, energy - might you to use your skills.\n" \
+                             "The battle takes step by step. You'll see information about your hero after any step. " \
+                             "Also, you'll get exp and gold.\n" \
+                             "Exp allows you to get new level, gold you can spend in a town.\n"
+
+        town_description = "\nWelcome to the Town!\n" \
+                           "After each battle you will get here. The Town might you to call the main menu, to upgrade your " \
+                           "hero at blacksmith, to buy and sell some things, to show your characteristics and of course from" \
+                           "here you can go to the new battle."
+
+        dummy = self.create_character('Dummy', 60, 100, 100, 50, 1)
+
+        print(battle_description)
+        input("If you're ready press any key...")
+
+        hero = Game().battle(hero, dummy)
+
+        print(town_description)
+
+        hero['tutorial'] = True    # it sets flag that mean tutorial is solved
+
+        return hero
 
 
 class Town():
@@ -199,12 +233,12 @@ class Town():
                   "[4]: Blacksmith\n"
                   "[5]: To the Arena")
 
-            cmd = Game().make_choice()
+            cmd = input('Make your choice: ')
 
             if cmd == '1':
                 Game().main_menu(self.hero)
             elif cmd == '2':
-                Character().show_info(self.hero)
+                Game().show_info(self.hero)
             elif cmd == '3':
                 self.trader()
             elif cmd == '4':
@@ -222,40 +256,12 @@ class Town():
         pass
 
 
-class Tutorial():
-    battle_description = "\nIt's battle place, my hero! You should use command like in the main menu I mean 1, 2, 3.\n" \
-                         "So, you have health and energy. Health you know why, energy - might you to use your skills.\n" \
-                         "The battle takes step by step. You'll see information about your hero after any step. " \
-                         "Also, you'll get exp and gold.\n" \
-                         "Exp allows you to get new level, gold you can spend in a town.\n"
-
-    town_description = "\nWelcome to the Town!\n" \
-                       "After each battle you will get here. The Town might you to call the main menu, to upgrade your " \
-                       "hero at blacksmith, to buy and sell some things, to show your characteristics and of course from" \
-                       "here you can go to the new battle."
-
-    def run(self, hero):
-        dummy = Character().create_character('Dummy', 60, 100, 100, 450, 1)
-
-        print(self.battle_description)
-        input("If you're ready press any key...")
-
-        hero = Game().battle(hero, dummy)
-
-        print(self.town_description)
-
-        hero['tutorial'] = True    # it sets flag that mean tutorial is solved
-
-        return hero
-
-
-class RunGame():
+def run_game():
     hero = Game().main_menu()
 
     if hero['tutorial'] is not True:
-        hero = Tutorial().run(hero)
+        hero = Game().tutorial(hero)
 
     Town(hero).menu()
 
-
-RunGame()
+run_game()
