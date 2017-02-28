@@ -1,4 +1,5 @@
 from random import choice
+from copy import deepcopy
 import pickle
 
 
@@ -25,6 +26,9 @@ class Game():
             print('\nIncorrect command')
             self.main_menu()
 
+        if hero is not None:
+            return hero
+
     def new_game(self):
         print('\nVERY GREATEST STORY...and his name is...')
         name = ''
@@ -50,6 +54,8 @@ class Game():
                 pickle.dump(hero, f)
 
     def battle(self, hero, enemy):
+        original_enemy = deepcopy(enemy)
+
         print('\n{:^40}\n{:>17} VS {}\n'.format('Battle Is Running', hero['name'], enemy['name']))
 
         while True:
@@ -67,6 +73,7 @@ class Game():
                 hero['exp'] = enemy['exp']
                 hero['gold'] = enemy['gold']
                 hero = self.level_up(hero)
+                enemies.remove(original_enemy)
                 break
 
             # then enemy will attack and then will check is enemy winner
@@ -136,26 +143,40 @@ class Game():
 
         return character
 
-    def enemy_list(self):
+    def create_enemy_list(self):
         # this function generates list of enemies
 
         enemies = []
+        num_of_heroes = 4   # uses for determine how much exist heroes in the game
 
-        names = ['Villager', 'Farmer', 'Knight']
-        healths = [80, 100, 140]
-        energies = [100, 100, 100]
-        golds = [20, 30, 50]
-        exps = [50, 70, 150]
-        levels = ['1', '2', '3']
+        names = ['Dummy', 'Villager', 'Farmer', 'Knight']
+        healths = [60, 80, 100, 140]
+        energies = [100, 100, 100, 100]
+        golds = [10, 20, 30, 50]
+        exps = [30, 50, 70, 150]
+        levels = ['1', '1', '2', '3']
 
-        for i in range(3):
+        for i in range(num_of_heroes):
             enemy = self.create_character(names[i], healths[i], energies[i],
                                           golds[i], exps[i], levels[i])
             enemies.append(enemy)
 
         return enemies
 
-    def levels(self):
+    def choose_enemy(self):
+        for i, enemy in enumerate(enemies):
+            print('%d: %s' % (i+1, enemy['name']))
+
+        while True:
+            try:
+                cmd = int(input('Make your choice: '))
+                return deepcopy(enemies[cmd-1])
+            except ValueError:
+                print('Incorrect command')
+            except IndexError:
+                print('Incorrect command')
+
+    def create_levels(self):
         # this function generates dict of available levels in the game
 
         levels = {'1': 0}   # Initialize first level
@@ -169,7 +190,7 @@ class Game():
         return levels
 
     def level_up(self, hero):
-        levels = self.levels()
+        levels = self.create_levels()
         exp = hero['exp']
 
         for i in range(2, 13):
@@ -205,7 +226,7 @@ class Game():
                            "hero at blacksmith, to buy and sell some things, to show your characteristics and of course from" \
                            "here you can go to the new battle."
 
-        dummy = self.create_character('Dummy', 60, 100, 100, 50, 1)
+        dummy = self.create_character('Dummy', 60, 100, 10, 30, '1')
 
         print(battle_description)
         input("If you're ready press any key...")
@@ -231,12 +252,12 @@ class Town():
                   "[2]: Hero's information\n"
                   "[3]: Trader\n"
                   "[4]: Blacksmith\n"
-                  "[5]: To the Arena")
+                  "[5]: Doctor\n"
+                  "[6]: To the Arena\n")
 
             cmd = input('Make your choice: ')
-
             if cmd == '1':
-                Game().main_menu(self.hero)
+                self.hero = Game().main_menu(self.hero)
             elif cmd == '2':
                 Game().show_info(self.hero)
             elif cmd == '3':
@@ -244,10 +265,38 @@ class Town():
             elif cmd == '4':
                 self.blacksmith()
             elif cmd == '5':
-                pass
+                self.hero = self.doctor(self.hero)
+            elif cmd == '6':
+                enemy = Game().choose_enemy()
+                self.hero = Game().battle(self.hero, enemy)
             else:
                 print('\nIncorrect command')
                 self.menu()
+
+    def doctor(self, hero):
+        print("[1]: Heal 30 health (5 gold)\n"
+              "[2]: Heal 50 health (10 gold)\n"
+              "[3]: Heal 100 health (20 gold)\n")
+
+        cmd = input('Make your choice: ')
+
+        if cmd == '1':
+            hero['gold'] -= 5
+            hero['health'] += 30
+        elif cmd == '2':
+            hero['gold'] -= 10
+            hero['health'] += 50
+        elif cmd == '3':
+            hero['gold'] -= 20
+            hero['health'] += 100
+        else:
+            print('\nIncorrect command')
+            self.doctor(hero)
+
+        if hero['health'] > hero['max health']:
+            hero['health'] = hero['max health']
+
+        return hero
 
     def trader(self):
         pass
@@ -263,5 +312,8 @@ def run_game():
         hero = Game().tutorial(hero)
 
     Town(hero).menu()
+
+
+enemies = Game().create_enemy_list()
 
 run_game()
