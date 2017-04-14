@@ -1,25 +1,67 @@
+import items
 from random import choice
-from copy import deepcopy
 import pickle
 
 
 class Character:
-    def __init__(self, name, health, energy, gold, exp, level, max_health=None, max_energy=None):
+    def __init__(self, name, health, energy, gold, exp, level, inventory=None, max_health=None, max_energy=None):
         self.name = name
         self.health = health
         self.energy = energy
         self.gold = gold
         self.exp = exp
         self.level = level
+        self.inventory = inventory
         self.max_health = max_health
         self.max_energy = max_energy
 
+    def show_inventory(self):
+        for i, item in enumerate(self.inventory):
+            print("%d: %s" % (i+1, item.name))
+
+    def use_item(self):
+        items_ids = []
+
+        while True:
+            for i, item in enumerate(self.inventory):
+                items_ids.append(str(i+1))
+                print("[%d]: %s" % (i+1, item.name))
+
+            cmd = input('Choose item: ')
+
+            if cmd in items_ids:
+                item = self.inventory.pop(int(cmd)-1)
+
+                if isinstance(item, items.Food):
+                    item.use(self)
+                    break
+                elif isinstance(item, items.Potion):
+                    if item.name == 'Health potion':
+                        self.health += item.value
+
+                        if self.health > self.max_health:
+                            self.health = self.max_health
+
+                        print('%s has healed health' % self.name)
+                        break
+                    elif item.name == 'Energy potion':
+                        self.energy += item.value
+
+                        if self.energy > self.max_energy:
+                            self.energy = self.max_energy
+
+                        print('%s has restored energy' % self.name)
+                        break
+            else:
+                print('Incorrect command\n')
+
 
 def main_menu(hero=None):
-    print('[1]: New game\n'
-          '[2]: Load game\n'
-          '[3]: Save game\n'
-          '[4]: Exit game')
+    print("{:^20}".format("Main Menu"))
+    messages = ["New game", "Load game", "Save game", "Exit game"]
+
+    for i, message in enumerate(messages):
+        print('[%d]: %s' % (i+1, message))
 
     cmd = input('Make your choice: ')
 
@@ -48,7 +90,8 @@ def new_game():
     while name == '':
         name = input("Enter hero's name: ")
 
-    hero = Character(name, 100, 100, 0, 0, '1', 100, 100)
+    hero = Character(name, 100, 100, 0, 0, '1', max_health=100, max_energy=100)
+    hero.inventory = []
     hero.tutorial = False    # it means that tutorial is not solved
     return hero
 
@@ -250,8 +293,8 @@ def tutorial(hero):
                          "Exp allows you to get new level, gold you can spend in a town.\n"
 
     town_description = "\nWelcome to the Town!\n" \
-                       "After each battle you will get here. The Town might you to call the main menu, to upgrade your " \
-                       "hero at blacksmith, to buy and sell some things, to show your characteristics and of course from" \
+                       "After each battle you will get here. The Town might you to call the main menu, to upgrade your\n" \
+                       "hero at blacksmith, to buy and sell some things, to show your characteristics and of course from\n" \
                        "here you can go to the new battle."
 
     dummy = enemies[0]
@@ -275,26 +318,29 @@ class Town():
     def menu(self):
         print("\n{:^40}\n".format("Now you're in the Town."))
 
-        while True:
-            print("[1]: Main menu\n"
-                  "[2]: Hero's information\n"
-                  "[3]: Trader\n"
-                  "[4]: Blacksmith\n"
-                  "[5]: Doctor\n"
-                  "[6]: To the Arena\n")
+        messages = ["Main menu", "Hero's information", "Hero's inventory", "Trader", "Blacksmith", "Doctor",
+                    "To the Arena"]
 
-            cmd = input('Make your choice: ')
+        while True:
+            for i, message in enumerate(messages):
+                print('[%d]: %s' % (i+1, message))
+
+            cmd = input('\nMake your choice: ')
+
             if cmd == '1':
                 self.hero = main_menu(self.hero)
             elif cmd == '2':
                 show_info(self.hero)
             elif cmd == '3':
-                self.trader()
+                self.hero.show_inventory()
+                print('\n')
             elif cmd == '4':
-                self.blacksmith()
+                self.trader(self.hero)
             elif cmd == '5':
-                self.hero = self.doctor(self.hero)
+                self.blacksmith()
             elif cmd == '6':
+                self.hero = self.doctor(self.hero)
+            elif cmd == '7':
                 enemy = choose_enemy()
                 self.hero = battle(self.hero, enemy)
             else:
@@ -302,14 +348,16 @@ class Town():
                 self.menu()
 
     def doctor(self, hero):
-        print('Your health: %d\n'
-              'Your gold: %d' % (hero.health, hero.gold))
-        print("[1]: Heal 30 health (5 gold)\n"
-              "[2]: Heal 50 health (10 gold)\n"
-              "[3]: Heal 100 health (20 gold)\n"
-              "[4]: Return to menu")
+        messages = ["Heal 30 health (5 gold)", "Heal 50 health (10 gold)",
+                    "Heal 100 health (20 gold)", "Return to Town"]
 
-        cmd = input('Make your choice: ')
+        print('Your health: %d\n'
+              'Your gold: %d\n' % (hero.health, hero.gold))
+
+        for i, message in enumerate(messages):
+                print('[%d]: %s' % (i+1, message))
+
+        cmd = input('\nMake your choice: ')
 
         if cmd == '1':
             hero.gold -= 5
@@ -331,8 +379,51 @@ class Town():
 
         return hero
 
-    def trader(self):
-        pass
+    def trader(self, hero):
+        print('{:^30}'.format('Trader'))
+        print('Do you want to buy or sell something, adventurer?')
+        print('[1]: Buy\n'
+              '[2]: Sell\n'
+              '[3]: Return to Town')
+
+        cmd = input('Make your choice: ')
+
+        if cmd == '1':
+            item_ids = []
+
+            for i, item in enumerate(trader):
+                item_ids.append(str(i+1))
+                print('[%d]: %s' % (i+1, item.name))
+            print('\n')
+
+            cmd = input('Make your choice: ')
+
+            if cmd in item_ids:
+                int_cmd = int(cmd)-1
+                hero.inventory.append(trader[int_cmd])
+                hero.gold -= trader[int_cmd].cost
+
+                print("You bought %s\n" % trader[int_cmd].name)
+        elif cmd == '2':
+            item_ids = []
+
+            for i, item in enumerate(hero.inventory):
+                item_ids.append(str(i+1))
+                print('[%d]: %s' % (i+1, item.name))
+            print('\n')
+
+            cmd = input('Make your choice: ')
+
+            if cmd in item_ids:
+                int_cmd = int(cmd)-1
+                hero.gold += hero.inventory[int_cmd].cost
+                print('You sold %s' % hero.inventory[int_cmd].name)
+                hero.inventory.pop(int_cmd)
+        elif cmd == '3':
+            self.menu()
+        else:
+            print('Incorrect command')
+            self.trader(hero)
 
     def blacksmith(self):
         pass
@@ -348,5 +439,6 @@ def run_game():
 
 
 enemies = create_enemy_list()
+trader = items.trader
 
 run_game()
