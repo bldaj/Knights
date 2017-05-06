@@ -1,19 +1,22 @@
-import items
-from random import choice
 import pickle
+from random import choice
+
+import items
+from levels import levels
+from enemies import enemies
 
 
 class Character:
-    def __init__(self, name, health, energy, gold, exp, level, inventory=None, max_health=None, max_energy=None):
+    def __init__(self, name, health, energy, gold, exp, level, max_health=None, max_energy=None):
         self.name = name
         self.health = health
         self.energy = energy
         self.gold = gold
         self.exp = exp
         self.level = level
-        self.inventory = inventory
         self.max_health = max_health
         self.max_energy = max_energy
+        self.inventory = []
 
     def show_inventory(self):
         for i, item in enumerate(self.inventory):
@@ -23,37 +26,41 @@ class Character:
         items_ids = []
 
         while True:
-            for i, item in enumerate(self.inventory):
-                items_ids.append(str(i+1))
-                print("[%d]: %s" % (i+1, item.name))
-
-            cmd = input('Choose item: ')
-
-            if cmd in items_ids:
-                item = self.inventory.pop(int(cmd)-1)
-
-                if isinstance(item, items.Food):
-                    item.use(self)
-                    break
-                elif isinstance(item, items.Potion):
-                    if item.name == 'Health potion':
-                        self.health += item.value
-
-                        if self.health > self.max_health:
-                            self.health = self.max_health
-
-                        print('%s has healed health' % self.name)
-                        break
-                    elif item.name == 'Energy potion':
-                        self.energy += item.value
-
-                        if self.energy > self.max_energy:
-                            self.energy = self.max_energy
-
-                        print('%s has restored energy' % self.name)
-                        break
+            if len(self.inventory) == 0:
+                print("\nYou don't have any items\n")
+                return 'Empty inventory'
             else:
-                print('Incorrect command\n')
+                for i, item in enumerate(self.inventory):
+                    items_ids.append(str(i+1))
+                    print("[%d]: %s" % (i+1, item.name))
+
+                cmd = input('Choose item: ')
+
+                if cmd in items_ids:
+                    item = self.inventory.pop(int(cmd)-1)
+
+                    if isinstance(item, items.Food):
+                        item.use(self)
+                        break
+                    elif isinstance(item, items.Potion):
+                        if item.name == 'Health potion':
+                            self.health += item.value
+
+                            if self.health > self.max_health:
+                                self.health = self.max_health
+
+                            print('\n%s has healed health' % self.name)
+                            break
+                        elif item.name == 'Energy potion':
+                            self.energy += item.value
+
+                            if self.energy > self.max_energy:
+                                self.energy = self.max_energy
+
+                            print('\n%s has restored energy' % self.name)
+                            break
+                else:
+                    print('Incorrect command\n')
 
 
 def main_menu(hero=None):
@@ -91,7 +98,6 @@ def new_game():
         name = input("Enter hero's name: ")
 
     hero = Character(name, 100, 100, 0, 0, '1', max_health=100, max_energy=100)
-    hero.inventory = []
     hero.tutorial = False    # it means that tutorial is not solved
     return hero
 
@@ -126,13 +132,10 @@ def battle(hero, enemy):
     while True:
         characters_info(hero, enemy)
 
-        print('[1]: To hit in head (40 dmg/20 energy)\n'
-              '[2]: To hit in body (30 dmg/15 energy)\n'
-              '[3]: To hit in legs (20 dmg/15 energy)')
-
         # hero will first attack and then will check is hero winner
-        hero, enemy = hero_attack(hero, enemy)
+        hero, enemy = hero_action(hero, enemy)
 
+        # checking is hero win
         if who_is_winner(hero, enemy) == 'Hero':
             print('\n{:^40}'.format("You're a winner"))
             hero.exp += enemy.exp
@@ -142,7 +145,7 @@ def battle(hero, enemy):
             break
 
         # then enemy will attack and then will check is enemy winner
-        hero, enemy = enemy_attack(hero, enemy)
+        hero, enemy = enemy_action(hero, enemy)
 
         if who_is_winner(hero, enemy) == 'Enemy':
             return_enemy_context(enemy, enemy_context)
@@ -152,7 +155,12 @@ def battle(hero, enemy):
     return hero
 
 
-def hero_attack(hero, enemy):
+def hero_action(hero, enemy):
+    print('[1]: To hit in head (40 dmg/20 energy)\n'
+          '[2]: To hit in body (30 dmg/15 energy)\n'
+          '[3]: To hit in legs (20 dmg/15 energy)\n'
+          '[4]: Use item (5 energy)')
+
     cmd = input('Make your choice: ')
 
     if cmd == '1':
@@ -164,14 +172,24 @@ def hero_attack(hero, enemy):
     elif cmd == '3':
         enemy.health -= 20
         hero.energy -= 15
+    elif cmd == '4':
+        status = hero.use_item()
+
+        if status == 'Empty inventory':
+            pass
+        else:
+            hero.energy -= 5
+            characters_info(hero, enemy)
+
+        hero_action(hero, enemy)
     else:
         print('\nIncorrect command')
-        hero_attack(hero, enemy)
+        hero_action(hero, enemy)
 
     return hero, enemy
 
 
-def enemy_attack(hero, enemy):
+def enemy_action(hero, enemy):
     cmd = choice([1, 2, 3])
 
     if cmd == 1:
@@ -212,24 +230,6 @@ def characters_info(hero, enemy):
                                                      'Enemy health', enemy.health))
 
 
-def create_enemy_list():
-    enemies = []
-    num_of_heroes = 4   # uses for determine how much exist heroes in the game
-
-    names = ['Dummy', 'Villager', 'Farmer', 'Knight']
-    healths = [60, 80, 100, 140]
-    energies = [100, 100, 100, 100]
-    golds = [10, 20, 30, 50]
-    exps = [100, 160, 70, 150]
-    levels = ['1', '1', '2', '3']
-
-    for i in range(num_of_heroes):
-        enemy = Character(names[i], healths[i], energies[i], golds[i], exps[i], levels[i])
-        enemies.append(enemy)
-
-    return enemies
-
-
 def choose_enemy():
     for i, enemy in enumerate(enemies):
         print('%d: %s' % (i+1, enemy.name))
@@ -244,22 +244,7 @@ def choose_enemy():
             print('Incorrect command')
 
 
-def create_levels():
-    # this function generates dict of available levels in the game
-
-    levels = {'1': 0}   # Initialize first level
-    exp = 250
-    levels['2'] = exp   # 300 experience points need to get second level
-
-    for i in range(3, 13):
-        exp *= 1.3
-        levels[str(i)] = int(exp)
-
-    return levels
-
-
 def level_up(hero):
-    levels = create_levels()
     exp = hero.exp
 
     for i in range(2, 13):
@@ -287,7 +272,7 @@ def show_info(hero):
 
 def tutorial(hero):
     battle_description = "\nIt's battle place, my hero! You should use command like in the main menu I mean 1, 2, 3.\n" \
-                         "So, you have health and energy. Health you know why, energy - might you to use your skills.\n" \
+                         "So, you have health and energy. Health you know why, energy - allows you to use your skills.\n" \
                          "The battle takes step by step. You'll see information about your hero after any step. " \
                          "Also, you'll get exp and gold.\n" \
                          "Exp allows you to get new level, gold you can spend in a town.\n"
@@ -300,7 +285,7 @@ def tutorial(hero):
     dummy = enemies[0]
 
     print(battle_description)
-    input("If you're ready press any key...")
+    input("If you're ready press [enter]...")
 
     hero = battle(hero, dummy)
 
@@ -394,7 +379,7 @@ class Town():
             for i, item in enumerate(trader):
                 item_ids.append(str(i+1))
                 print('[%d]: %s' % (i+1, item.name))
-            print('\n')
+            print('To exit press [enter]\n')
 
             cmd = input('Make your choice: ')
 
@@ -438,7 +423,7 @@ def run_game():
     Town(hero).menu()
 
 
-enemies = create_enemy_list()
+enemies = enemies
 trader = items.trader
 
 run_game()
