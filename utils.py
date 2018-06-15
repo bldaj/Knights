@@ -1,7 +1,15 @@
-def print_title(title):
+def display_title(title):
     print('{:^20}'.format(title))
 
 
-def show_commands(commands):
+def display_incorrect_command():
+    print('Incorrect command')
+
+
+def display_commands(commands):
     for i, command in enumerate(commands):
         print('[%d]: %s' % (i+1, command))
+
+
+def get_cmd():
+    return input('Make your choice: ')

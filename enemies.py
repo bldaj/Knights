@@ -11,11 +11,14 @@ class Enemy:
         self.inventory = []
 
 
-enemies = []
+def create_enemies_list():
+    enemies = []
 
-dummy = Enemy('Dummy', 60, 100, 10, 100, '1')
-villager = Enemy('Villager', 80, 100, 20, 160, '2')
-farmer = Enemy('Farmer', 100, 100, 30, 180, '2')
-knight = Enemy('Knight', 140, 120, 50, 250, '3')
+    dummy = Enemy('Dummy', 60, 100, 10, 100, '1')
+    villager = Enemy('Villager', 80, 100, 20, 160, '2')
+    farmer = Enemy('Farmer', 100, 100, 30, 180, '2')
+    knight = Enemy('Knight', 140, 120, 50, 250, '3')
 
-enemies.extend((dummy, villager, farmer, knight))
+    enemies.extend((dummy, villager, farmer, knight))
+
+    return enemies
