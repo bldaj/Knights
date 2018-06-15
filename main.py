@@ -426,4 +426,6 @@ def run_game():
 enemies = enemies
 trader = items.trader
 
-run_game()
+
+if __name__ == '__main__':
+    run_game()
