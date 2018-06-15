@@ -1,8 +1,10 @@
 from utils import *
 from enemies import create_enemies_list
+from character import Character
 
 
-ENEMIES = create_enemies_list()
+enemies = create_enemies_list()
+hero = Character()
 
 
 def save_game():
@@ -13,8 +15,18 @@ def load_game():
     pass
 
 
+def initialize_hero():
+    hero.create_name()
+    hero.health = 100
+    hero.energy = 100
+    hero.gold = 10
+    hero.exp = 0
+    hero.level = 1
+
+
 def new_game():
-    pass
+    hero.display_stats()
+    initialize_hero()
 
 
 def main_menu():

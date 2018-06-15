@@ -2,16 +2,31 @@ import items
 
 
 class Character:
-    def __init__(self, name, health, energy, gold, exp, level, max_health=None, max_energy=None):
+    def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
         self.name = name
         self.health = health
         self.energy = energy
         self.gold = gold
         self.exp = exp
         self.level = level
-        self.max_health = max_health
-        self.max_energy = max_energy
+        self.max_health = health
+        self.max_energy = energy
         self.inventory = []
+
+    def create_name(self):
+        name = ''
+
+        while name == '':
+            name = input('Enter hero name: ')
+
+        self.name = name
+
+    def display_stats(self):
+        print('Name: {0} Level: {1}\n'
+              'Health: {2} Experience: {3}\n'
+              'Energy: {4} Gold: {5}\n'.format(self.name, self.level,
+                                               self.health, self.exp,
+                                               self.energy, self.gold))
 
     def show_inventory(self):
         for i, item in enumerate(self.inventory):
