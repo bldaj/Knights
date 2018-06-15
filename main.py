@@ -1,18 +1,27 @@
+import pickle
+
 from utils import *
+from battle import battle
 from enemies import create_enemies_list
 from character import Character
-
 
 enemies = create_enemies_list()
 hero = Character()
 
 
 def save_game():
-    pass
+    json.dump(hero)
 
 
 def load_game():
     pass
+
+
+def tutorial():
+    display_title('Tutorial')
+    print('tutor text')
+
+    battle(hero=hero, enemy=enemies[0])
 
 
 def initialize_hero():
@@ -25,8 +34,9 @@ def initialize_hero():
 
 
 def new_game():
-    hero.display_stats()
+    print('STORY')
     initialize_hero()
+    tutorial()
 
 
 def main_menu():
