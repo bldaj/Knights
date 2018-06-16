@@ -10,11 +10,20 @@ hero = Character()
 
 
 def save_game():
-    json.dump(hero)
+    with open('save.pickle', 'wb') as f:
+        pickle.dump(hero, f)
 
 
 def load_game():
-    pass
+    with open('save.pickle', 'rb') as f:
+        loaded_hero = pickle.load(f)
+
+    hero.name = loaded_hero.name
+    hero.health = loaded_hero.health
+    hero.energy = loaded_hero.energy
+    hero.gold = loaded_hero.gold
+    hero.exp = loaded_hero.exp
+    hero.level = loaded_hero.level
 
 
 def tutorial():
