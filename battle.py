@@ -1,5 +1,13 @@
 from utils import *
 from random import choice
+from main import enemies
+
+
+def check_winner(hero_health, enemy_health):
+    if hero_health <= 0:
+        return 'enemy'
+    elif enemy_health <= 0:
+        return 'hero'
 
 
 def display_enemy_choice(enemy_name, enemy_choice):
@@ -76,6 +84,12 @@ def battle(hero, enemy):
 
         if turn == 1:
             hero_action(hero=hero, enemy=enemy)
+            if check_winner(hero.health, enemy.health) == 'hero':
+                display_title("You're a winner!")
+                hero.exp += enemy.exp
+                hero.gold += enemy.gold
+                break
+
             turn = toggle_turn(turn)
         elif turn == 2:
             enemy_action(hero=hero, enemy=enemy)
