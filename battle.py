@@ -1,6 +1,13 @@
 from utils import *
 from random import choice
-from main import enemies
+
+
+def return_enemy_context(enemy, context):
+    enemy.name = context['name']
+    enemy.health = context['health']
+    enemy.energy = context['energy']
+    enemy.gold = context['gold']
+    enemy.exp = context['gold']
 
 
 def check_winner(hero_health, enemy_health):
@@ -75,9 +82,13 @@ def hero_action(hero, enemy):
 
 def battle(hero, enemy):
     display_title('Battle')
-    print('{} VS {}'.format(hero.name, enemy.name))
+    print('{0} VS {1}'.format(hero.name, enemy.name))
 
     turn = set_turn()
+
+    enemy_context = {'name': enemy.name, 'health': enemy.health,
+                     'energy': enemy.energy, 'gold': enemy.gold,
+                     'exp': enemy.exp}
 
     while True:
         display_characters_stats(hero=hero, enemy=enemy)
@@ -88,11 +99,16 @@ def battle(hero, enemy):
                 display_title("You're a winner!")
                 hero.exp += enemy.exp
                 hero.gold += enemy.gold
-                break
+                return True
 
             turn = toggle_turn(turn)
         elif turn == 2:
             enemy_action(hero=hero, enemy=enemy)
+            if check_winner(hero.health, enemy.health) == 'enemy':
+                display_title("You lose!")
+                return_enemy_context(enemy, enemy_context)
+                return False
+
             turn = toggle_turn(turn)
         else:
             print('Incorrect turn')

@@ -1,5 +1,5 @@
 def display_title(title):
-    print('{:^20}'.format(title))
+    print('{0:^20}'.format(title))
 
 
 def display_incorrect_command():

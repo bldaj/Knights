@@ -30,7 +30,10 @@ def tutorial():
     display_title('Tutorial')
     print('tutor text')
 
-    battle(hero=hero, enemy=enemies[0])
+    if battle(hero=hero, enemy=enemies[0]):
+        enemies.remove(enemies[0])
+    else:
+        print('You failed even in the tutorial...')
 
 
 def initialize_hero():
