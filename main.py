@@ -2,6 +2,7 @@ import pickle
 
 from utils import *
 from battle import battle
+from town import town_menu
 from enemies import create_enemies_list
 from character import Character
 
@@ -74,6 +75,7 @@ def main_menu():
 
 def start():
     main_menu()
+    town_menu(hero=hero, enemies=enemies)
 
 
 if __name__ == '__main__':
