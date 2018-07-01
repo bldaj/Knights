@@ -13,6 +13,8 @@ hero = Character()
 def save_game():
     with open('save.pickle', 'wb') as f:
         pickle.dump(hero, f)
+    with open('enemies.pickle', 'wb') as f2:
+        pickle.dump(enemies, f2)
 
 
 def load_game():
@@ -26,15 +28,19 @@ def load_game():
     hero.exp = loaded_hero.exp
     hero.level = loaded_hero.level
 
+    with open('enemies.pickle', 'rb') as f2:
+        global enemies
+        enemies = pickle.load(f2)
+
 
 def tutorial():
     display_title('Tutorial')
-    print('tutor text')
+    print('Tutorial text')
 
     if battle(hero=hero, enemy=enemies[0]):
         enemies.remove(enemies[0])
     else:
-        print('You failed even in the tutorial...')
+        print('You managed to lose even during the tutorial...')
 
 
 def initialize_hero():
