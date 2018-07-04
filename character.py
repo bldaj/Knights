@@ -14,12 +14,14 @@ class Character:
         self.inventory = []
 
     def create_name(self):
-        name = ''
+        while True:
+            name = input('Enter hero name.\nName length must be less than 20 symbols: ')
 
-        while name == '':
-            name = input('Enter hero name: ')
-
-        self.name = name
+            if len(name) != 0 and len(name) <= 20:
+                self.name = name
+                break
+            else:
+                print('Try again')
 
     def display_stats(self):
         print('Name: {0} Level: {1}\n'
