@@ -23,7 +23,9 @@ def load_game():
 
     hero.name = loaded_hero.name
     hero.health = loaded_hero.health
+    hero.max_health = loaded_hero.max_health
     hero.energy = loaded_hero.energy
+    hero.max_energy = loaded_hero.max_energy
     hero.gold = loaded_hero.gold
     hero.exp = loaded_hero.exp
     hero.level = loaded_hero.level
@@ -39,6 +41,7 @@ def tutorial():
 
     if battle(hero=hero, enemy=enemies[0]):
         enemies.remove(enemies[0])
+        hero.level_up()
     else:
         print('You managed to lose even during the tutorial...')
 
@@ -47,9 +50,11 @@ def initialize_hero():
     hero.create_name()
     hero.health = 100
     hero.energy = 100
+    hero.max_health = hero.health
+    hero.max_energy = hero.energy
     hero.gold = 10
     hero.exp = 0
-    hero.level = 1
+    hero.level = 0
 
 
 def new_game():

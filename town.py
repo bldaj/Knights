@@ -7,7 +7,7 @@ from battle import battle
 def choose_enemy(enemies: list):
     while True:
         for i, enemy in enumerate(enemies):
-            print('{0}: {1}'.format(i + 1, enemy.name))
+            print('{0}: {1} (level {2})'.format(i + 1, enemy.name, enemy.level))
 
         try:
             cmd = get_cmd()
@@ -31,7 +31,9 @@ def load_game(hero, enemies: list):
 
     hero.name = loaded_hero.name
     hero.health = loaded_hero.health
+    hero.max_health = loaded_hero.max_health
     hero.energy = loaded_hero.energy
+    hero.max_energy = loaded_hero.max_energy
     hero.gold = loaded_hero.gold
     hero.exp = loaded_hero.exp
     hero.level = loaded_hero.level
@@ -82,8 +84,6 @@ def town_menu(hero, enemies: list):
 
             if battle(hero=hero, enemy=enemy):
                 enemies.remove(enemy)
+                hero.level_up()
         elif cmd == '3':
             hero.display_stats()
-
-            for e in enemies:
-                print(e.name, e.health)

@@ -1,23 +1,33 @@
+from levels import LEVELS
+
+
 class Enemy:
-    def __init__(self, name, health, energy, gold, exp, level, max_health=None, max_energy=None):
+    def __init__(self, name, health, energy, gold, exp):
         self.name = name
         self.health = health
         self.energy = energy
         self.gold = gold
         self.exp = exp
-        self.level = level
-        self.max_health = max_health
-        self.max_energy = max_energy
+        self.level = self.check_level()
+        self.max_health = self.health
+        self.max_energy = self.energy
         self.inventory = []
+
+    def check_level(self):
+        for level, exp in enumerate(LEVELS):
+            if self.exp > exp:
+                continue
+            elif self.exp <= exp:
+                return level
 
 
 def create_enemies_list():
     enemies = []
 
-    dummy = Enemy('Dummy', 60, 100, 10, 100, '1')
-    villager = Enemy('Villager', 80, 100, 20, 160, '2')
-    farmer = Enemy('Farmer', 100, 100, 30, 180, '2')
-    knight = Enemy('Knight', 140, 120, 50, 250, '3')
+    dummy = Enemy(name='Dummy', health=60, energy=100, gold=10, exp=60)
+    villager = Enemy(name='Villager', health=80, energy=100, gold=20, exp=100)
+    farmer = Enemy(name='Farmer', health=100, energy=100, gold=30, exp=150)
+    knight = Enemy(name='Knight', health=140, energy=120, gold=50, exp=280)
 
     enemies.extend((dummy, villager, farmer, knight))
 

@@ -1,4 +1,5 @@
 import items
+from levels import LEVELS
 
 
 class Character:
@@ -30,7 +31,22 @@ class Character:
                                                self.health, self.exp,
                                                self.energy, self.gold))
 
-    def show_inventory(self):
+    def level_up(self):
+        for level, exp in enumerate(LEVELS):
+            if self.exp > exp:
+                continue
+            elif self.exp <= exp:
+                if self.level != level:
+                    self.level = level
+                    print('LEVEL UP\nYou got {0} level!'.format(self.level))
+
+                    self.max_health += 10 * level
+                    self.health = self.max_health
+                    self.max_energy += 10 * level
+                    self.energy = self.max_energy
+                break
+
+    def display_inventory(self):
         for i, item in enumerate(self.inventory):
             print("%d: %s" % (i+1, item.name))
 
