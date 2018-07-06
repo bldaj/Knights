@@ -11,5 +11,5 @@ def display_commands(commands):
         print('[%d]: %s' % (i+1, command))
 
 
-def get_cmd():
-    return input('Make your choice: ')
+def get_cmd(message='Make your choice: '):
+    return input(message)
