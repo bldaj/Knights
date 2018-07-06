@@ -2,6 +2,7 @@ import pickle
 
 from utils import *
 from battle import battle
+from doctor import doctor
 
 
 def choose_enemy(enemies: list):
@@ -86,4 +87,7 @@ def town_menu(hero, enemies: list):
                 enemies.remove(enemy)
                 hero.level_up()
         elif cmd == '3':
+            display_title('Stats')
             hero.display_stats()
+        elif cmd == '4':
+            doctor(hero=hero)
