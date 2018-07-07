@@ -7,8 +7,11 @@ def _limit_health_value(hero):
 
 
 def _heal(hero, heal_valuse, cost):
-    hero.health += heal_valuse
-    hero.gold -= cost
+    if hero.health != hero.max_health:
+        hero.health += heal_valuse
+        hero.gold -= cost
+    else:
+        print("You're healthy, go away!")
 
 
 def _check_money(hero_money, cost):
