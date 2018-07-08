@@ -7,12 +7,18 @@ from doctor import doctor
 
 def choose_enemy(enemies: list):
     while True:
+        print('Press Enter to resume')
+
         for i, enemy in enumerate(enemies):
             print('{0}: {1} (level {2})'.format(i + 1, enemy.name, enemy.level))
 
         try:
             cmd = get_cmd()
-            return enemies[int(cmd)-1]
+
+            if cmd == '':
+                return
+            else:
+                return enemies[int(cmd)-1]
         except ValueError:
             display_incorrect_command()
         except IndexError:
@@ -83,9 +89,10 @@ def town_menu(hero, enemies: list):
         elif cmd == '2':
             enemy = choose_enemy(enemies=enemies)
 
-            if battle(hero=hero, enemy=enemy):
-                enemies.remove(enemy)
-                hero.level_up()
+            if enemy is not None:
+                if battle(hero=hero, enemy=enemy):
+                    enemies.remove(enemy)
+                    hero.level_up()
         elif cmd == '3':
             display_title('Stats')
             hero.display_stats()
