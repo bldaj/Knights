@@ -12,10 +12,18 @@ class Character:
         self.level = level
         self.max_health = health
         self.max_energy = energy
+        self.strength = 1
+        self.agility = 1
+        self.intelligence = 1
+        self.speed_attack = 1
         self.inventory = []
 
 
 class Hero(Character):
+    def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
+        super().__init__(name=name, health=health, energy=energy, gold=gold, exp=exp, level=level)
+        self.points = 1
+
     def create_name(self):
         while True:
             name = input('Enter hero name.\nName length must be less than 20 symbols: ')
@@ -46,6 +54,7 @@ class Hero(Character):
                     self.health = self.max_health
                     self.max_energy += 10 * level
                     self.energy = self.max_energy
+                    self.points += 1
                 break
 
     def display_inventory(self):
