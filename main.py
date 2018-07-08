@@ -4,17 +4,10 @@ from utils import *
 from battle import battle
 from town import town_menu
 from enemies import create_enemies_list
-from character import Character
+from character import Hero
 
 enemies = create_enemies_list()
-hero = Character()
-
-
-def save_game():
-    with open('save.pickle', 'wb') as f:
-        pickle.dump(hero, f)
-    with open('enemies.pickle', 'wb') as f2:
-        pickle.dump(enemies, f2)
+hero = Hero()
 
 
 def load_game():
@@ -66,7 +59,7 @@ def new_game():
 def main_menu():
     display_title('Main menu')
 
-    commands = ['New game', 'Load game', 'Save game', 'Exit game']
+    commands = ['New game', 'Load game', 'Exit game']
 
     display_commands(commands)
     cmd = get_cmd()
@@ -76,8 +69,6 @@ def main_menu():
     elif cmd == '2':
         load_game()
     elif cmd == '3':
-        save_game()
-    elif cmd == '4':
         exit('Game exit')
     else:
         display_incorrect_command()
