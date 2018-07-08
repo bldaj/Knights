@@ -14,6 +14,8 @@ class Character:
         self.max_energy = energy
         self.inventory = []
 
+
+class Hero(Character):
     def create_name(self):
         while True:
             name = input('Enter hero name.\nName length must be less than 20 symbols: ')
