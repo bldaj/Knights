@@ -94,7 +94,17 @@ def town_menu(hero, enemies: list):
                     enemies.remove(enemy)
                     hero.level_up()
         elif cmd == '3':
-            display_title('Stats')
-            hero.display_stats()
+            display_commands(["Show hero's information", "Set action points"])
+
+            cmd = get_cmd()
+
+            if cmd == '1':
+                display_title('Stats')
+                hero.display_hero_infrormation()
+                hero.display_stats()
+            elif cmd == '2':
+                hero.enhance_attributes()
+            else:
+                display_incorrect_command()
         elif cmd == '4':
             doctor(hero=hero)
