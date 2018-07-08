@@ -6,9 +6,12 @@ def display_incorrect_command():
     print('Incorrect command')
 
 
-def display_commands(commands):
-    for i, command in enumerate(commands):
-        print('[%d]: %s' % (i+1, command))
+def display_commands(commands: list):
+    if isinstance(commands, list):
+        for i, command in enumerate(commands):
+            print('[%d]: %s' % (i+1, command))
+    else:
+        print('Commands are not list type')
 
 
 def get_cmd(message='Make your choice: '):
