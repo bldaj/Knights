@@ -94,15 +94,17 @@ def town_menu(hero, enemies: list):
                     enemies.remove(enemy)
                     hero.level_up()
         elif cmd == '3':
-            display_commands(["Show hero's information", "Set action points"])
+            display_commands(["Resume", "Show hero's information", "Set stat points"])
 
             cmd = get_cmd()
 
             if cmd == '1':
+                continue
+            elif cmd == '2':
                 display_title('Stats')
                 hero.display_hero_infrormation()
                 hero.display_stats()
-            elif cmd == '2':
+            elif cmd == '3':
                 hero.enhance_attributes()
             else:
                 display_incorrect_command()
