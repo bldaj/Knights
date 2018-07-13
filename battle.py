@@ -97,7 +97,7 @@ def battle(hero, enemy):
             hero_action(hero=hero, enemy=enemy)
             if check_winner(hero.health, enemy.health) == 'hero':
                 display_title("You're a winner!")
-                hero.exp += enemy.exp
+                hero.exp += round(enemy.exp * hero.exp_multiplier)
                 hero.gold += enemy.gold
                 return True
 

@@ -26,7 +26,7 @@ class Hero(Character):
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
         super().__init__(name=name, health=health, energy=energy, gold=gold, exp=exp, level=level)
         self.exp_multiplier = 1
-        self.action_points = 1
+        self.stat_points = 1
 
     def create_name(self):
         while True:
@@ -51,7 +51,7 @@ class Hero(Character):
               'Intelligence: {2}\n'
               'Speed attack: {3}'.format(self.strength, self.agility, self.intelligence, self.speed_attack))
         print('-' * 40)
-        print('You have action points: {0}'.format(self.action_points))
+        print('You have stat points: {0}'.format(self.stat_points))
 
     def level_up(self):
         for level, exp in enumerate(LEVELS):
@@ -66,7 +66,7 @@ class Hero(Character):
                     self.health = self.max_health
                     self.max_energy += 10 * level
                     self.energy = self.max_energy
-                    self.action_points += 1
+                    self.stat_points += 1
                 break
 
     def enhance_attributes(self):
@@ -99,7 +99,7 @@ class Hero(Character):
                 display_incorrect_command()
 
     def _is_enough_points(self):
-        if self.action_points > 0:
+        if self.stat_points > 0:
             return True
         else:
             return False
@@ -108,18 +108,18 @@ class Hero(Character):
         self.strength += 1
         self.max_health += 5
         self.physical_resistance += 1
-        self.action_points -= 1
+        self.stat_points -= 1
 
     def _set_agility(self):
         self.agility += 1
         self.speed_attack += 1
-        self.action_points -= 1
+        self.stat_points -= 1
 
     def _set_intelligence(self):
         self.intelligence += 1
         self.exp_multiplier += 0.01
         self.magical_resistance += 1
-        self.action_points -= 1
+        self.stat_points -= 1
 
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
