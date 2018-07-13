@@ -16,6 +16,8 @@ class Character:
         self.strength = 1
         self.agility = 1
         self.intelligence = 1
+        self.physical_resistance = 1
+        self.magical_resistance = 1
         self.speed_attack = 1
         self.inventory = []
 
@@ -23,6 +25,7 @@ class Character:
 class Hero(Character):
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
         super().__init__(name=name, health=health, energy=energy, gold=gold, exp=exp, level=level)
+        self.exp_multiplier = 1
         self.action_points = 1
 
     def create_name(self):
@@ -103,14 +106,19 @@ class Hero(Character):
 
     def _set_strength(self):
         self.strength += 1
+        self.max_health += 5
+        self.physical_resistance += 1
         self.action_points -= 1
 
     def _set_agility(self):
         self.agility += 1
+        self.speed_attack += 1
         self.action_points -= 1
 
     def _set_intelligence(self):
         self.intelligence += 1
+        self.exp_multiplier += 0.01
+        self.magical_resistance += 1
         self.action_points -= 1
 
     def display_inventory(self):
