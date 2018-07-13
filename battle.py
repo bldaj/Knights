@@ -1,5 +1,11 @@
 from utils import *
+from constants import *
 from random import choice
+
+
+def miss_chance(character):
+    chance = character.agility
+    print(chance)
 
 
 def return_enemy_context(enemy, context):
@@ -19,7 +25,7 @@ def check_winner(hero_health, enemy_health):
 
 def display_enemy_choice(enemy_name, enemy_choice):
     if isinstance(enemy_choice, str):
-        print('{} has hit you in {}'.format(enemy_name, enemy_choice))
+        print('{0} has hit you in {1}'.format(enemy_name, enemy_choice))
 
 
 def display_characters_stats(hero, enemy):
@@ -46,15 +52,15 @@ def enemy_action(hero, enemy):
 
     if cmd == '1':
         enemy.energy -= 15
-        hero.health -= 40
+        hero.health -= 40 * enemy.strength
         display_enemy_choice(enemy.name, 'head')
     elif cmd == '2':
         enemy.energy -= 10
-        hero.health -= 30
+        hero.health -= 30 * enemy.strength
         display_enemy_choice(enemy.name, 'body')
     elif cmd == '3':
         enemy.energy -= 10
-        hero.health -= 20
+        hero.health -= 20 * enemy.strength
         display_enemy_choice(enemy.name, 'legs')
 
 
@@ -67,13 +73,13 @@ def hero_action(hero, enemy):
 
     if cmd == '1':
         hero.energy -= 15
-        enemy.health -= 40
+        enemy.health -= 40 * hero.strength
     elif cmd == '2':
         hero.energy -= 10
-        enemy.health -= 30
+        enemy.health -= 30 * hero.strength
     elif cmd == '3':
         hero.energy -= 10
-        enemy.health -= 20
+        enemy.health -= 20 * hero.strength
     elif cmd == '4':
         pass
     else:
