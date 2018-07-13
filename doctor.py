@@ -24,11 +24,11 @@ def _check_money(hero_money, cost):
 def doctor(hero):
     display_title('Doctor')
 
-    commands = ['Resume', 'Heal a little (15 hp/ 5 golds)', 'Bandage the wounds (40 hp/ 10 gold)',
+    commands = ['Resume', 'Heal a little (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
                 'Take medical care (150 hp/ 30 golds)']
 
     while True:
-        print('Your health: {0}\nYou have {1} golds'.format(hero.health, hero.gold))
+        print('Your health: {0}/{1}\nYou have {2} gold'.format(hero.health, hero.max_health, hero.gold))
         display_commands(commands=commands)
 
         cmd = get_cmd()

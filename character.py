@@ -57,7 +57,7 @@ class Hero(Character):
             elif self.exp <= exp:
                 if self.level != level:
                     self.level = level
-                    print('LEVEL UP\nYou got {0} level!'.format(self.level))
+                    print('LEVEL UP\nYou got level {0}!'.format(self.level))
 
                     self.max_health += 10 * level
                     self.health = self.max_health
