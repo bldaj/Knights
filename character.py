@@ -84,7 +84,7 @@ class Hero(Character):
                 if self._is_enough_points():
                     self._set_strength()
                 else:
-                    print("You don't have enough action points")
+                    print("You don't have enough stat points")
             elif cmd == '3':
                 if self._is_enough_points():
                     self._set_agility()
