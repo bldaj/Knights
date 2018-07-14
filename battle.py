@@ -23,9 +23,10 @@ def check_winner(hero_health, enemy_health):
         return 'hero'
 
 
-def display_enemy_choice(enemy_name, enemy_choice):
+def display_enemy_choice(enemy_name, enemy_choice, damage):
     if isinstance(enemy_choice, str):
         print('{0} has hit you in {1}'.format(enemy_name, enemy_choice))
+        print('You received {0} damage'.format(damage))
 
 
 def display_characters_stats(hero, enemy):
@@ -52,36 +53,50 @@ def enemy_action(hero, enemy):
 
     if cmd == '1':
         enemy.energy -= 15
-        hero.health -= 40 * enemy.strength
-        display_enemy_choice(enemy.name, 'head')
+        head_damage = int(40 + enemy.strength * HEAD_DAMAGE_MODIFIER)
+
+        hero.health -= head_damage
+
+        display_enemy_choice(enemy.name, 'head', head_damage)
     elif cmd == '2':
         enemy.energy -= 10
-        hero.health -= 30 * enemy.strength
-        display_enemy_choice(enemy.name, 'body')
+        body_damage = int(30 + enemy.strength * BODY_DAMAGE_MODIFIER)
+
+        hero.health -= body_damage
+
+        display_enemy_choice(enemy.name, 'body', body_damage)
     elif cmd == '3':
         enemy.energy -= 10
-        hero.health -= 20 * enemy.strength
-        display_enemy_choice(enemy.name, 'legs')
+        legs_damage = int(20 + enemy.strength * LEGS_DAMAGE_MODIFIER)
+
+        hero.health -= legs_damage
+
+        display_enemy_choice(enemy.name, 'legs', legs_damage)
 
 
 def hero_action(hero, enemy):
-    commands = ['Attack the head (40 dmg/15 energy)', 'Attack the body (30 dmg/10 energy)',
-                'Attack the legs (20 dmg/10 energy)', 'Use item (5 energy)']
+    head_damage = int(40 + hero.strength * 3)
+    body_damage = int(30 + hero.strength * 3)
+    legs_damage = int(20 + hero.strength * 3)
+
+    commands = ['Attack the head ({0} dmg/15 energy)'.format(head_damage),
+                'Attack the body ({0} dmg/10 energy)'.format(body_damage),
+                'Attack the legs ({0} dmg/10 energy)'.format(legs_damage)]
     display_commands(commands)
 
     cmd = get_cmd()
 
     if cmd == '1':
         hero.energy -= 15
-        enemy.health -= 40 * hero.strength
+        enemy.health -= int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
     elif cmd == '2':
         hero.energy -= 10
-        enemy.health -= 30 * hero.strength
+        enemy.health -= int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
     elif cmd == '3':
         hero.energy -= 10
-        enemy.health -= 20 * hero.strength
-    elif cmd == '4':
-        pass
+        enemy.health -= int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
+    # elif cmd == '4':
+    #     pass
     else:
         display_incorrect_command()
 
