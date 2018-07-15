@@ -141,6 +141,7 @@ def battle(hero, enemy):
             if check_winner(hero.health, enemy.health) == 'enemy':
                 display_title("You lose!")
                 return_enemy_context(enemy, enemy_context)
+                hero.health = 0
                 return False
 
             turn = toggle_turn(turn)
