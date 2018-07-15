@@ -59,15 +59,21 @@ class Hero(Character):
                 continue
             elif self.exp <= exp:
                 if self.level != level:
-                    self.level = level
-                    print('LEVEL UP\nYou got level {0}!'.format(self.level))
-
-                    self.max_health += 10 * level
-                    self.health = self.max_health
-                    self.max_energy += 10 * level
-                    self.energy = self.max_energy
-                    self.stat_points += 1
+                    self._level_up(level)
                 break
+        else:
+            self._level_up(level)
+
+    def _level_up(self, level):
+        self.stat_points += level - self.level
+
+        self.level = level
+        print('LEVEL UP\nYou got level {0}!'.format(self.level))
+
+        self.max_health += 10 * level
+        self.health = self.max_health
+        self.max_energy += 10 * level
+        self.energy = self.max_energy
 
     def increase_attributes(self):
         while True:
@@ -113,7 +119,7 @@ class Hero(Character):
 
     def _increase_agility(self):
         self.agility += 1
-        self.speed_attack += 0.1
+        self.speed_attack = round(0.1 + self.speed_attack, 3)
         self.stat_points -= 1
 
     def _increase_intelligence(self):
