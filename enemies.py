@@ -97,6 +97,3 @@ def create_enemies_list():
     enemies.extend((dummy, villager, farmer, knight))
 
     return enemies
-
-
-create_enemies_list()
