@@ -111,6 +111,7 @@ def hero_action(hero, enemy):
     #     pass
     else:
         display_incorrect_command()
+        hero_action(hero=hero, enemy=enemy)
 
 
 def battle(hero, enemy):
