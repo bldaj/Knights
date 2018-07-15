@@ -110,3 +110,9 @@ def town_menu(hero, enemies: list):
                 display_incorrect_command()
         elif cmd == '4':
             doctor(hero=hero)
+        elif cmd == '5':
+            pass
+        elif cmd == '6':
+            pass
+        else:
+            display_incorrect_command()
