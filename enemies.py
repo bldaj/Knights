@@ -11,6 +11,9 @@ class Enemy(Character):
                 self.level = level
                 self.stat_points += level
                 break
+        else:
+            self.level = level
+            self.stat_points += level
 
     def set_strength(self, value):
         if value > 0:
@@ -88,7 +91,8 @@ def create_enemies_list():
         exp=310
     )
     knight.check_level()
-    knight.set_strength(10)
+    knight.set_strength(4)
+    knight.set_agility(1)
 
     enemies.extend((dummy, villager, farmer, knight))
 
