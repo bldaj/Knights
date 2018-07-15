@@ -18,6 +18,7 @@ class Character:
         self.intelligence = 1
         self.physical_resistance = 1
         self.magical_resistance = 1
+        self.stat_points = 1
         self.speed_attack = 1
         self.inventory = []
 
@@ -26,7 +27,6 @@ class Hero(Character):
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
         super().__init__(name=name, health=health, energy=energy, gold=gold, exp=exp, level=level)
         self.exp_multiplier = 1
-        self.stat_points = 1
 
     def create_name(self):
         while True:
@@ -69,7 +69,7 @@ class Hero(Character):
                     self.stat_points += 1
                 break
 
-    def enhance_attributes(self):
+    def increase_attributes(self):
         while True:
             self.display_stats()
 
@@ -82,17 +82,17 @@ class Hero(Character):
                 return
             elif cmd == '2':
                 if self._is_enough_points():
-                    self._set_strength()
+                    self._increase_strength()
                 else:
                     print("You don't have enough stat points")
             elif cmd == '3':
                 if self._is_enough_points():
-                    self._set_agility()
+                    self._increase_agility()
                 else:
                     print("You don't have enough action points")
             elif cmd == '4':
                 if self._is_enough_points():
-                    self._set_intelligence()
+                    self._increase_intelligence()
                 else:
                     print("You don't have enough action points")
             else:
@@ -104,20 +104,20 @@ class Hero(Character):
         else:
             return False
 
-    def _set_strength(self):
+    def _increase_strength(self):
         self.strength += 1
-        self.max_health += 5
+        self.max_health += 2
+        self.health += 2
         self.physical_resistance += 1
         self.stat_points -= 1
 
-    def _set_agility(self):
+    def _increase_agility(self):
         self.agility += 1
-        self.speed_attack += 1
+        self.speed_attack += 0.1
         self.stat_points -= 1
 
-    def _set_intelligence(self):
+    def _increase_intelligence(self):
         self.intelligence += 1
-        self.exp_multiplier += 0.01
         self.magical_resistance += 1
         self.stat_points -= 1
 

@@ -105,7 +105,7 @@ def town_menu(hero, enemies: list):
                 hero.display_hero_infrormation()
                 hero.display_stats()
             elif cmd == '3':
-                hero.enhance_attributes()
+                hero.increase_attributes()
             else:
                 display_incorrect_command()
         elif cmd == '4':

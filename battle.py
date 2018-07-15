@@ -29,6 +29,13 @@ def display_enemy_choice(enemy_name, enemy_choice, damage):
         print('You received {0} damage'.format(damage))
 
 
+def display_turn(turn, hero_name, enemy_name):
+    if turn == 1:
+        print('{0} begins'.format(hero_name))
+    elif turn == 2:
+        print('{0} begins'.format(enemy_name))
+
+
 def display_characters_stats(hero, enemy):
     print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
                                                      'Enemy health', enemy.health))
@@ -44,8 +51,13 @@ def toggle_turn(turn):
         print('Incorrect turn type')
 
 
-def set_turn():
-    return choice([1, 2])
+def set_turn(hero, enemy):
+    if hero.speed_attack > enemy.speed_attack:
+        return 1
+    elif hero.speed_attack < enemy.speed_attack:
+        return 2
+    else:
+        return choice([1, 2])
 
 
 def enemy_action(hero, enemy):
@@ -75,26 +87,26 @@ def enemy_action(hero, enemy):
 
 
 def hero_action(hero, enemy):
-    head_damage = int(40 + hero.strength * 3)
-    body_damage = int(30 + hero.strength * 3)
-    legs_damage = int(20 + hero.strength * 3)
+    head_damage = int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
+    body_damage = int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
+    legs_damage = int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
 
     commands = ['Attack the head ({0} dmg/15 energy)'.format(head_damage),
                 'Attack the body ({0} dmg/10 energy)'.format(body_damage),
-                'Attack the legs ({0} dmg/10 energy)'.format(legs_damage)]
+                'Attack the legs ({0} dmg/5 energy)'.format(legs_damage)]
     display_commands(commands)
 
     cmd = get_cmd()
 
     if cmd == '1':
         hero.energy -= 15
-        enemy.health -= int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
+        enemy.health -= head_damage
     elif cmd == '2':
         hero.energy -= 10
-        enemy.health -= int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
+        enemy.health -= body_damage
     elif cmd == '3':
-        hero.energy -= 10
-        enemy.health -= int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
+        hero.energy -= 5
+        enemy.health -= legs_damage
     # elif cmd == '4':
     #     pass
     else:
@@ -105,7 +117,8 @@ def battle(hero, enemy):
     display_title('Battle')
     print('{0} VS {1}'.format(hero.name, enemy.name))
 
-    turn = set_turn()
+    turn = set_turn(hero=hero, enemy=enemy)
+    display_turn(turn=turn, hero_name=hero.name, enemy_name=enemy.name)
 
     enemy_context = {'name': enemy.name, 'health': enemy.health,
                      'energy': enemy.energy, 'gold': enemy.gold,

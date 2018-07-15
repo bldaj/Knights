@@ -22,6 +22,7 @@ def _check_money(hero_money, cost):
 
 
 def doctor(hero):
+    # TODO: if hero health less than 0 set it to 0 and only then heal him
     display_title('Doctor')
 
     commands = ['Resume', 'Heal a little (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
