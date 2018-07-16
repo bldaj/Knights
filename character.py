@@ -22,6 +22,9 @@ class Character:
         self.speed_attack = 1
         self.inventory = []
 
+    def __repr__(self):
+        return self.name
+
 
 class Hero(Character):
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
@@ -79,7 +82,7 @@ class Hero(Character):
         while True:
             self.display_stats()
 
-            commands = ['Resume', 'Up strength', 'Up agility', 'Up intelligence']
+            commands = ['Resume', 'Increase strength', 'Increase agility', 'Increase intelligence']
             display_commands(commands=commands)
 
             cmd = get_cmd()
