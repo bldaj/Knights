@@ -51,13 +51,17 @@ def toggle_turn(turn):
         print('Incorrect turn type')
 
 
-def set_turn(hero, enemy):
-    if hero.speed_attack > enemy.speed_attack:
-        return 1
-    elif hero.speed_attack < enemy.speed_attack:
-        return 2
-    else:
-        return choice([1, 2])
+def set_turn(characters: list):
+    return characters.sort(key=lambda character: character.speed_attack, reverse=True)
+
+
+def create_characters_list(hero, enemies: list):
+    characters = [hero]
+
+    for enemy in enemies:
+        characters.append(enemy)
+
+    return characters
 
 
 def enemy_action(hero, enemy):
@@ -114,37 +118,38 @@ def hero_action(hero, enemy):
         hero_action(hero=hero, enemy=enemy)
 
 
-def battle(hero, enemy):
+def battle(hero, enemies: list):
     display_title('Battle')
-    print('{0} VS {1}'.format(hero.name, enemy.name))
+    # print('{0} VS {1}'.format(hero.name, enemies.name))
 
-    turn = set_turn(hero=hero, enemy=enemy)
-    display_turn(turn=turn, hero_name=hero.name, enemy_name=enemy.name)
+    set_turn(create_characters_list(hero=hero, enemies=enemies))
 
-    enemy_context = {'name': enemy.name, 'health': enemy.health,
-                     'energy': enemy.energy, 'gold': enemy.gold,
-                     'exp': enemy.exp}
-
-    while True:
-        display_characters_stats(hero=hero, enemy=enemy)
-
-        if turn == 1:
-            hero_action(hero=hero, enemy=enemy)
-            if check_winner(hero.health, enemy.health) == 'hero':
-                display_title("You're a winner!")
-                hero.exp += round(enemy.exp * hero.exp_multiplier)
-                hero.gold += enemy.gold
-                return True
-
-            turn = toggle_turn(turn)
-        elif turn == 2:
-            enemy_action(hero=hero, enemy=enemy)
-            if check_winner(hero.health, enemy.health) == 'enemy':
-                display_title("You lose!")
-                return_enemy_context(enemy, enemy_context)
-                hero.health = 0
-                return False
-
-            turn = toggle_turn(turn)
-        else:
-            print('Incorrect turn')
+    # display_turn(turn=turn, hero_name=hero.name, enemy_name=enemies.name)
+    #
+    # enemy_context = {'name': enemies.name, 'health': enemies.health,
+    #                  'energy': enemies.energy, 'gold': enemies.gold,
+    #                  'exp': enemies.exp}
+    #
+    # while True:
+    #     display_characters_stats(hero=hero, enemy=enemies)
+    #
+    #     if turn == 1:
+    #         hero_action(hero=hero, enemy=enemies)
+    #         if check_winner(hero.health, enemies.health) == 'hero':
+    #             display_title("You're a winner!")
+    #             hero.exp += round(enemies.exp * hero.exp_multiplier)
+    #             hero.gold += enemies.gold
+    #             return True
+    #
+    #         turn = toggle_turn(turn)
+    #     elif turn == 2:
+    #         enemy_action(hero=hero, enemy=enemies)
+    #         if check_winner(hero.health, enemies.health) == 'enemy':
+    #             display_title("You lose!")
+    #             return_enemy_context(enemies, enemy_context)
+    #             hero.health = 0
+    #             return False
+    #
+    #         turn = toggle_turn(turn)
+    #     else:
+    #         print('Incorrect turn')
