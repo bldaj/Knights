@@ -1,6 +1,9 @@
 from utils import *
 from constants import *
 from random import choice
+# TODO: move Hero class into own module
+from character import Hero
+from enemies import Enemy
 
 
 def miss_chance(character):
@@ -8,6 +11,7 @@ def miss_chance(character):
     print(chance)
 
 
+# TODO: change according on character sequence
 def return_enemy_context(enemy, context):
     enemy.name = context['name']
     enemy.health = context['health']
@@ -16,6 +20,7 @@ def return_enemy_context(enemy, context):
     enemy.exp = context['gold']
 
 
+# TODO: change according on character sequence
 def check_winner(hero_health, enemy_health):
     if hero_health <= 0:
         return 'enemy'
@@ -29,39 +34,18 @@ def display_enemy_choice(enemy_name, enemy_choice, damage):
         print('You received {0} damage'.format(damage))
 
 
-def display_turn(turn, hero_name, enemy_name):
-    if turn == 1:
-        print('{0} begins'.format(hero_name))
-    elif turn == 2:
-        print('{0} begins'.format(enemy_name))
-
-
+# TODO: change according on character sequence
 def display_characters_stats(hero, enemy):
     print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
                                                      'Enemy health', enemy.health))
 
 
-def toggle_turn(turn):
-    if isinstance(turn, int):
-        if turn == 1:
-            return 2
-        elif turn == 2:
-            return 1
-    else:
-        print('Incorrect turn type')
-
-
-def set_turn(characters: list):
-    return characters.sort(key=lambda character: character.speed_attack, reverse=True)
-
-
-def create_characters_list(hero, enemies: list):
-    characters = [hero]
-
-    for enemy in enemies:
-        characters.append(enemy)
-
-    return characters
+# TODO: change according on character sequence
+def display_turn(turn, hero_name, enemy_name):
+    if turn == 1:
+        print('{0} begins'.format(hero_name))
+    elif turn == 2:
+        print('{0} begins'.format(enemy_name))
 
 
 def enemy_action(hero, enemy):
@@ -118,11 +102,72 @@ def hero_action(hero, enemy):
         hero_action(hero=hero, enemy=enemy)
 
 
-def battle(hero, enemies: list):
-    display_title('Battle')
-    # print('{0} VS {1}'.format(hero.name, enemies.name))
+def display_versus(hero, enemy):
+    is_many = is_many_enemy(enemy)
 
-    set_turn(create_characters_list(hero=hero, enemies=enemies))
+    if is_many:
+        print('{0} VS {1}'.format(hero.name, enemy[0]))
+    elif not is_many:
+        print('{0} VS {1}'.format(hero.name, enemy.name))
+
+
+def make_sequence(hero, enemy):
+    characters = [hero]
+
+    is_many = is_many_enemy(enemy)
+
+    if is_many:
+        characters += enemy[1:]
+    elif not is_many:
+        characters.append(enemy)
+
+    n = len(characters)
+
+    for i in range(0, n-1):
+        for j in range(0, n-i-1):
+            if characters[j].speed_attack < characters[j+1].speed_attack:
+                characters[j], characters[j+1] = characters[j+1], characters[j]
+            elif characters[j].speed_attack == characters[j+1].speed_attack:
+                choice_ = choice([1, 2])
+
+                if choice_ == 2:
+                    characters[j], characters[j + 1] = characters[j + 1], characters[j]
+
+    return characters
+
+
+def is_hero(character):
+    if isinstance(character, Hero):
+        return True
+    elif isinstance(character, Enemy):
+        return False
+    else:
+        # TODO: create class with exit codes using Enum module
+        exit()
+
+
+def is_many_enemy(enemy):
+    if isinstance(enemy, Enemy):
+        return False
+    elif isinstance(enemy, list):
+        return True
+    else:
+        exit()
+
+
+def battle(hero, enemy):
+    display_title('Battle')
+    display_versus(hero=hero, enemy=enemy)
+
+    sequence = make_sequence(hero=hero, enemy=enemy)
+
+    for character in sequence:
+        if is_hero(character):
+            # TODO: create function which will provide to decide which enemy will be attacked
+            pass
+
+
+
 
     # display_turn(turn=turn, hero_name=hero.name, enemy_name=enemies.name)
     #
