@@ -90,7 +90,7 @@ def town_menu(hero, enemies: list):
             enemy = choose_enemy(enemies=enemies)
 
             if enemy is not None:
-                if battle(hero=hero, enemies=enemy):
+                if battle(hero=hero, enemy=enemy):
                     enemies.remove(enemy)
                     hero.level_up()
         elif cmd == '3':

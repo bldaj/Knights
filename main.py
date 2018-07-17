@@ -32,7 +32,7 @@ def tutorial():
     display_title('Tutorial')
     print('Tutorial text')
 
-    if battle(hero=hero, enemies=[enemies[0]]):
+    if battle(hero=hero, enemy=enemies[0]):
         enemies.remove(enemies[0])
         hero.level_up()
     else:
