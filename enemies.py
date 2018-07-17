@@ -49,8 +49,6 @@ class Enemy(Character):
 
 
 def create_enemies_list():
-    enemies = []
-
     dummy = Enemy(
         name='Dummy',
         health=60,
@@ -88,12 +86,32 @@ def create_enemies_list():
         health=140,
         energy=120,
         gold=15,
-        exp=310
+        exp=210
     )
     knight.check_level()
-    knight.set_strength(4)
+    knight.set_strength(3)
     knight.set_agility(1)
 
-    enemies.extend((dummy, villager, farmer, knight))
+    left_head_of_snake = Enemy(
+        name='Left head of Snake',
+        health=90,
+        energy=100,
+        gold=10,
+        exp=310
+    )
+    left_head_of_snake.check_level()
+    left_head_of_snake.set_strength(1)
+    left_head_of_snake.set_agility(4)
 
-    return enemies
+    right_head_of_snake = Enemy(
+        name='Right head of Snake',
+        health=90,
+        energy=100,
+        gold=10,
+        exp=310
+    )
+    right_head_of_snake.check_level()
+    right_head_of_snake.set_strength(1)
+    right_head_of_snake.set_agility(4)
+
+    return [dummy, villager, farmer, ['Two-headed Snake', left_head_of_snake, right_head_of_snake], knight]
