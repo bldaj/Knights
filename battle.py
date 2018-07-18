@@ -35,7 +35,7 @@ def display_enemy_choice(enemy_name, enemy_choice, damage):
 
 
 # TODO: change according on character sequence
-def display_characters_stats(hero, enemy):
+def display_characters_info(hero, enemy):
     print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
                                                      'Enemy health', enemy.health))
 
@@ -102,6 +102,26 @@ def hero_action(hero, enemy):
         hero_action(hero=hero, enemy=enemy)
 
 
+def choose_enemy(characters: list):
+    enemies = [character for character in characters if not isinstance(character, Hero)]
+
+    while True:
+        for i, enemy in enumerate(enemies):
+            print('{0}: {1} ({2}/{3})'.format(i + 1, enemy.name, enemy.health, enemy.max_health))
+
+        cmd = get_cmd()
+
+        try:
+            cmd = int(cmd)
+
+            if cmd > 0:
+                return enemies[int(cmd) - 1]
+        except ValueError:
+            display_incorrect_command()
+        except IndexError:
+            display_incorrect_command()
+
+
 def display_versus(hero, enemy):
     is_many = is_many_enemy(enemy)
 
@@ -111,7 +131,7 @@ def display_versus(hero, enemy):
         print('{0} VS {1}'.format(hero.name, enemy.name))
 
 
-def make_sequence(hero, enemy):
+def make_queue(hero, enemy):
     characters = [hero]
 
     is_many = is_many_enemy(enemy)
@@ -134,6 +154,20 @@ def make_sequence(hero, enemy):
                     characters[j], characters[j + 1] = characters[j + 1], characters[j]
 
     return characters
+
+
+def is_enemy_dead(enemy):
+    if enemy.health <= 0:
+        return True
+    else:
+        return False
+
+
+def is_hero_dead(hero):
+    if hero.health <= 0:
+        return True
+    else:
+        return False
 
 
 def is_hero(character):
@@ -159,11 +193,17 @@ def battle(hero, enemy):
     display_title('Battle')
     display_versus(hero=hero, enemy=enemy)
 
-    sequence = make_sequence(hero=hero, enemy=enemy)
+    queue = make_queue(hero=hero, enemy=enemy)
 
-    for character in sequence:
+    for character in queue:
         if is_hero(character):
             # TODO: create function which will provide to decide which enemy will be attacked
+            enemy = choose_enemy(queue)
+            hero_action(hero=hero, enemy=enemy)
+
+            if is_enemy_dead(enemy=enemy):
+                pass
+        else:
             pass
 
 
