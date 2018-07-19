@@ -11,13 +11,25 @@ def miss_chance(character):
     print(chance)
 
 
-# TODO: change according on character sequence
-def return_enemy_context(enemy, context):
-    enemy.name = context['name']
-    enemy.health = context['health']
-    enemy.energy = context['energy']
-    enemy.gold = context['gold']
-    enemy.exp = context['gold']
+# TODO: make copy values instead of transferring by link
+def save_enemies_context(enemies):
+    enemies_context = []
+
+    if is_many_enemies(enemies):
+        for enemy in enemies:
+            enemies_context.append(enemy)
+    else:
+        enemies_context.append(enemies)
+
+    return enemies_context
+
+
+def return_enemies_context(enemies, enemies_context):
+    for enemy in enemies:
+        for enemy_context in enemies_context:
+            if enemy.name == enemy_context.name:
+                enemy.health = enemy_context.health
+                enemy.energy = enemy_context.energy
 
 
 # TODO: change according on character sequence
@@ -122,24 +134,24 @@ def choose_enemy(characters: list):
             display_incorrect_command()
 
 
-def display_versus(hero, enemy):
-    is_many = is_many_enemy(enemy)
+def display_versus(hero, enemies):
+    is_many = is_many_enemies(enemies)
 
     if is_many:
-        print('{0} VS {1}'.format(hero.name, enemy[0]))
+        print('{0} VS {1}'.format(hero.name, enemies[0]))
     elif not is_many:
-        print('{0} VS {1}'.format(hero.name, enemy.name))
+        print('{0} VS {1}'.format(hero.name, enemies.name))
 
 
-def make_queue(hero, enemy):
+def make_queue(hero, enemies):
     characters = [hero]
 
-    is_many = is_many_enemy(enemy)
+    is_many = is_many_enemies(enemies)
 
     if is_many:
-        characters += enemy[1:]
+        characters += enemies[1:]
     elif not is_many:
-        characters.append(enemy)
+        characters.append(enemies)
 
     n = len(characters)
 
@@ -154,6 +166,16 @@ def make_queue(hero, enemy):
                     characters[j], characters[j + 1] = characters[j + 1], characters[j]
 
     return characters
+
+
+def count_enemies(queue: list):
+    enemies_count = 0
+
+    for character in queue:
+        if isinstance(character, Enemy):
+            enemies_count += 1
+
+    return enemies_count
 
 
 def is_enemy_dead(enemy):
@@ -180,7 +202,7 @@ def is_hero(character):
         exit()
 
 
-def is_many_enemy(enemy):
+def is_many_enemies(enemy):
     if isinstance(enemy, Enemy):
         return False
     elif isinstance(enemy, list):
@@ -189,22 +211,36 @@ def is_many_enemy(enemy):
         exit()
 
 
-def battle(hero, enemy):
+def battle(hero, enemies):
     display_title('Battle')
-    display_versus(hero=hero, enemy=enemy)
+    display_versus(hero=hero, enemies=enemies)
 
-    queue = make_queue(hero=hero, enemy=enemy)
+    queue = make_queue(hero=hero, enemies=enemies)
 
-    for character in queue:
-        if is_hero(character):
-            # TODO: create function which will provide to decide which enemy will be attacked
-            enemy = choose_enemy(queue)
-            hero_action(hero=hero, enemy=enemy)
+    enemies_count = count_enemies(queue)
+    is_hero_dead_ = False
 
-            if is_enemy_dead(enemy=enemy):
-                pass
-        else:
-            pass
+    enemies_context = save_enemies_context(enemies[1:])
+
+    while enemies_count != 0:
+        if is_hero_dead_:
+            break
+
+        for character in queue:
+            if is_hero(character):
+                enemy = choose_enemy(queue)
+                hero_action(hero=hero, enemy=enemy)
+
+                if is_enemy_dead(enemy=enemy):
+                    queue.remove(enemy)
+                    enemies_count -= 1
+            else:
+                enemy_action(hero=hero, enemy=character)
+
+                if is_hero_dead(hero):
+                    is_hero_dead_ = True
+                    return_enemies_context(enemies[1:], enemies_context)
+                    break
 
 
 
