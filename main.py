@@ -32,7 +32,8 @@ def tutorial():
     display_title('Tutorial')
     print('Tutorial text')
 
-    if battle(hero=hero, enemy=enemies[0]):
+    # TODO: don't forget change value from 3 to 0 in enemies
+    if battle(hero=hero, enemies=enemies[3]):
         enemies.remove(enemies[0])
         hero.level_up()
     else:
