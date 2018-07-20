@@ -10,7 +10,10 @@ def choose_enemy(enemies: list):
         print('Press Enter to resume')
 
         for i, enemy in enumerate(enemies):
-            print('{0}: {1} (level {2})'.format(i + 1, enemy.name, enemy.level))
+            if isinstance(enemy, list):
+                print('{0}: {1} (level {2})'.format(i + 1, enemy[0], enemy[1].level))
+            else:
+                print('{0}: {1} (level {2})'.format(i + 1, enemy.name, enemy.level))
 
         try:
             cmd = get_cmd()
