@@ -11,33 +11,38 @@ def miss_chance(character):
     print(chance)
 
 
-# TODO: make copy values instead of transferring by link
-def save_enemies_context(enemies):
+def save_enemies_context(enemies) -> list:
     enemies_context = []
 
     if is_many_enemies(enemies):
         for enemy in enemies:
-            enemies_context.append(enemy)
+            enemy_context = {
+                'name': enemy.name,
+                'health': enemy.health,
+                'energy': enemy.energy
+            }
+            enemies_context.append(enemy_context)
     else:
-        enemies_context.append(enemies)
+        enemy_context = {
+            'name': enemies.name,
+            'health': enemies.health,
+            'energy': enemies.energy
+        }
+        enemies_context.append(enemy_context)
 
     return enemies_context
 
 
 def return_enemies_context(enemies, enemies_context):
-    for enemy in enemies:
-        for enemy_context in enemies_context:
-            if enemy.name == enemy_context.name:
-                enemy.health = enemy_context.health
-                enemy.energy = enemy_context.energy
-
-
-# TODO: change according on character sequence
-def check_winner(hero_health, enemy_health):
-    if hero_health <= 0:
-        return 'enemy'
-    elif enemy_health <= 0:
-        return 'hero'
+    if isinstance(enemies, list):
+        for enemy in enemies:
+            for enemy_context in enemies_context:
+                if enemy.name == enemy_context['name']:
+                    enemy.health = enemy_context['health']
+                    enemy.energy = enemy_context['energy']
+    else:
+        enemies.health = enemies_context[0]['health']
+        enemies.energy = enemies_context[0]['energy']
 
 
 def display_enemy_choice(enemy_name, enemy_choice, damage):
@@ -46,7 +51,6 @@ def display_enemy_choice(enemy_name, enemy_choice, damage):
         print('You received {0} damage'.format(damage))
 
 
-# TODO: change according on character sequence
 def display_characters_info(hero, enemy):
     print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
                                                      'Enemy health', enemy.health))
@@ -114,8 +118,11 @@ def hero_action(hero, enemy):
         hero_action(hero=hero, enemy=enemy)
 
 
-def choose_enemy(characters: list):
-    enemies = [character for character in characters if not isinstance(character, Hero)]
+def choose_enemy(enemies: list):
+    enemies = [character for character in enemies if not isinstance(character, Hero)]
+
+    if len(enemies) == 1:
+        return enemies[0]
 
     while True:
         for i, enemy in enumerate(enemies):
@@ -218,29 +225,32 @@ def battle(hero, enemies):
     queue = make_queue(hero=hero, enemies=enemies)
 
     enemies_count = count_enemies(queue)
-    is_hero_dead_ = False
 
-    enemies_context = save_enemies_context(enemies[1:])
+    enemies_context = save_enemies_context(enemies[1:]) if isinstance(enemies, list) else save_enemies_context(enemies)
 
     while enemies_count != 0:
-        if is_hero_dead_:
-            break
-
         for character in queue:
             if is_hero(character):
                 enemy = choose_enemy(queue)
+                display_characters_info(hero=hero, enemy=enemy)
                 hero_action(hero=hero, enemy=enemy)
 
                 if is_enemy_dead(enemy=enemy):
                     queue.remove(enemy)
                     enemies_count -= 1
+                    hero.exp += round(enemy.exp * hero.exp_multiplier)
+                    hero.gold += enemy.gold
             else:
                 enemy_action(hero=hero, enemy=character)
 
                 if is_hero_dead(hero):
-                    is_hero_dead_ = True
-                    return_enemies_context(enemies[1:], enemies_context)
-                    break
+                    return_enemies_context(enemies[1:], enemies_context) if isinstance(enemies, list) else \
+                        return_enemies_context(enemies, enemies_context)
+                    display_title("You lose!")
+                    return False
+
+    display_title("You're a winner!")
+    return True
 
 
 
