@@ -94,7 +94,7 @@ def create_enemies_list():
 
     left_head_of_snake = Enemy(
         name='Left head of Snake',
-        health=90,
+        health=70,
         energy=100,
         gold=10,
         exp=310
@@ -105,7 +105,7 @@ def create_enemies_list():
 
     right_head_of_snake = Enemy(
         name='Right head of Snake',
-        health=90,
+        health=70,
         energy=100,
         gold=10,
         exp=310
@@ -114,4 +114,4 @@ def create_enemies_list():
     right_head_of_snake.set_strength(1)
     right_head_of_snake.set_agility(4)
 
-    return [dummy, villager, farmer, ['Two-headed Snake', left_head_of_snake, right_head_of_snake], knight]
+    return [dummy, villager, farmer, knight, ['Two-headed Snake', left_head_of_snake, right_head_of_snake]]
