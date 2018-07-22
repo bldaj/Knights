@@ -1,14 +1,21 @@
 from utils import *
 from constants import *
-from random import choice
+from random import choice, randint
 # TODO: move Hero class into own module
 from character import Hero
 from enemies import Enemy
 
 
-def miss_chance(character):
-    chance = character.agility
-    print(chance)
+def return_enemies_context(enemies, enemies_context):
+    if isinstance(enemies, list):
+        for enemy in enemies:
+            for enemy_context in enemies_context:
+                if enemy.name == enemy_context['name']:
+                    enemy.health = enemy_context['health']
+                    enemy.energy = enemy_context['energy']
+    else:
+        enemies.health = enemies_context[0]['health']
+        enemies.energy = enemies_context[0]['energy']
 
 
 def save_enemies_context(enemies) -> list:
@@ -33,35 +40,18 @@ def save_enemies_context(enemies) -> list:
     return enemies_context
 
 
-def return_enemies_context(enemies, enemies_context):
-    if isinstance(enemies, list):
-        for enemy in enemies:
-            for enemy_context in enemies_context:
-                if enemy.name == enemy_context['name']:
-                    enemy.health = enemy_context['health']
-                    enemy.energy = enemy_context['energy']
-    else:
-        enemies.health = enemies_context[0]['health']
-        enemies.energy = enemies_context[0]['energy']
+def hit_chance(attacking_character, defending_character):
+    print('Attacking agility: {}'.format(attacking_character.agility))
+    print('Defending agility: {}'.format(defending_character.agility))
+    chance = ((attacking_character.agility - defending_character.agility) / attacking_character.agility) * 100
 
-
-def display_enemy_choice(enemy_name, enemy_choice, damage):
-    if isinstance(enemy_choice, str):
-        print('{0} has hit you in {1}'.format(enemy_name, enemy_choice))
-        print('You received {0} damage'.format(damage))
-
-
-def display_characters_info(hero, enemy):
-    print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
-                                                     'Enemy health', enemy.health))
-
-
-# TODO: change according on character sequence
-def display_turn(turn, hero_name, enemy_name):
-    if turn == 1:
-        print('{0} begins'.format(hero_name))
-    elif turn == 2:
-        print('{0} begins'.format(enemy_name))
+    if chance == 0:
+        chance = randint(1, 50)
+    elif chance < 0:
+        chance = randint(1, 30)
+    elif chance >= 100:
+        chance = 80
+    print('Hit chance: {0}'.format(chance))
 
 
 def enemy_action(hero, enemy):
@@ -91,6 +81,7 @@ def enemy_action(hero, enemy):
 
 
 def hero_action(hero, enemy):
+    hit_chance(hero, enemy)
     head_damage = int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
     body_damage = int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
     legs_damage = int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
@@ -118,6 +109,25 @@ def hero_action(hero, enemy):
         hero_action(hero=hero, enemy=enemy)
 
 
+# TODO: change according on character sequence
+def display_turn(turn, hero_name, enemy_name):
+    if turn == 1:
+        print('{0} begins'.format(hero_name))
+    elif turn == 2:
+        print('{0} begins'.format(enemy_name))
+
+
+def display_enemy_choice(enemy_name, enemy_choice, damage):
+    if isinstance(enemy_choice, str):
+        print('{0} has hit you in {1}'.format(enemy_name, enemy_choice))
+        print('You received {0} damage'.format(damage))
+
+
+def display_characters_info(hero, enemy):
+    print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
+                                                     'Enemy health', enemy.health))
+
+
 def choose_enemy(enemies: list):
     enemies = [character for character in enemies if not isinstance(character, Hero)]
 
@@ -141,13 +151,47 @@ def choose_enemy(enemies: list):
             display_incorrect_command()
 
 
-def display_versus(hero, enemies):
-    is_many = is_many_enemies(enemies)
+def is_many_enemies(enemy):
+    if isinstance(enemy, Enemy):
+        return False
+    elif isinstance(enemy, list):
+        return True
+    else:
+        exit()
 
-    if is_many:
-        print('{0} VS {1}'.format(hero.name, enemies[0]))
-    elif not is_many:
-        print('{0} VS {1}'.format(hero.name, enemies.name))
+
+def is_enemy_dead(enemy):
+    if enemy.health <= 0:
+        return True
+    else:
+        return False
+
+
+def is_hero_dead(hero):
+    if hero.health <= 0:
+        return True
+    else:
+        return False
+
+
+def is_hero(character):
+    if isinstance(character, Hero):
+        return True
+    elif isinstance(character, Enemy):
+        return False
+    else:
+        # TODO: create class with exit codes using Enum module
+        exit()
+
+
+def count_enemies(queue: list):
+    enemies_count = 0
+
+    for character in queue:
+        if isinstance(character, Enemy):
+            enemies_count += 1
+
+    return enemies_count
 
 
 def make_queue(hero, enemies):
@@ -175,47 +219,13 @@ def make_queue(hero, enemies):
     return characters
 
 
-def count_enemies(queue: list):
-    enemies_count = 0
+def display_versus(hero, enemies):
+    is_many = is_many_enemies(enemies)
 
-    for character in queue:
-        if isinstance(character, Enemy):
-            enemies_count += 1
-
-    return enemies_count
-
-
-def is_enemy_dead(enemy):
-    if enemy.health <= 0:
-        return True
-    else:
-        return False
-
-
-def is_hero_dead(hero):
-    if hero.health <= 0:
-        return True
-    else:
-        return False
-
-
-def is_hero(character):
-    if isinstance(character, Hero):
-        return True
-    elif isinstance(character, Enemy):
-        return False
-    else:
-        # TODO: create class with exit codes using Enum module
-        exit()
-
-
-def is_many_enemies(enemy):
-    if isinstance(enemy, Enemy):
-        return False
-    elif isinstance(enemy, list):
-        return True
-    else:
-        exit()
+    if is_many:
+        print('{0} VS {1}'.format(hero.name, enemies[0]))
+    elif not is_many:
+        print('{0} VS {1}'.format(hero.name, enemies.name))
 
 
 def battle(hero, enemies):
@@ -251,36 +261,3 @@ def battle(hero, enemies):
 
     display_title("You're a winner!")
     return True
-
-
-
-
-    # display_turn(turn=turn, hero_name=hero.name, enemy_name=enemies.name)
-    #
-    # enemy_context = {'name': enemies.name, 'health': enemies.health,
-    #                  'energy': enemies.energy, 'gold': enemies.gold,
-    #                  'exp': enemies.exp}
-    #
-    # while True:
-    #     display_characters_stats(hero=hero, enemy=enemies)
-    #
-    #     if turn == 1:
-    #         hero_action(hero=hero, enemy=enemies)
-    #         if check_winner(hero.health, enemies.health) == 'hero':
-    #             display_title("You're a winner!")
-    #             hero.exp += round(enemies.exp * hero.exp_multiplier)
-    #             hero.gold += enemies.gold
-    #             return True
-    #
-    #         turn = toggle_turn(turn)
-    #     elif turn == 2:
-    #         enemy_action(hero=hero, enemy=enemies)
-    #         if check_winner(hero.health, enemies.health) == 'enemy':
-    #             display_title("You lose!")
-    #             return_enemy_context(enemies, enemy_context)
-    #             hero.health = 0
-    #             return False
-    #
-    #         turn = toggle_turn(turn)
-    #     else:
-    #         print('Incorrect turn')
