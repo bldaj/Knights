@@ -47,7 +47,7 @@ def initialize_hero():
     hero.max_energy = hero.energy
     hero.gold = 10
     hero.exp = 0
-    hero.level = 0
+    hero.level = 1
 
 
 def new_game():
