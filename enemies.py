@@ -67,7 +67,6 @@ def create_enemies_list():
         exp=100
     )
     villager.check_level()
-    villager.set_agility(1)
     villager.set_strength(1)
 
     farmer = Enemy(
@@ -86,7 +85,7 @@ def create_enemies_list():
         health=140,
         energy=120,
         gold=15,
-        exp=210
+        exp=410
     )
     regular_fighter.check_level()
     regular_fighter.set_strength(3)
@@ -94,24 +93,22 @@ def create_enemies_list():
 
     left_head_of_snake = Enemy(
         name='Left head of Snake',
-        health=70,
+        health=80,
         energy=100,
         gold=10,
-        exp=310
+        exp=410
     )
     left_head_of_snake.check_level()
-    left_head_of_snake.set_strength(1)
     left_head_of_snake.set_agility(4)
 
     right_head_of_snake = Enemy(
         name='Right head of Snake',
-        health=70,
+        health=80,
         energy=100,
         gold=10,
-        exp=310
+        exp=410
     )
     right_head_of_snake.check_level()
-    right_head_of_snake.set_strength(1)
     right_head_of_snake.set_agility(4)
 
     former_warrior = Enemy(
@@ -119,11 +116,11 @@ def create_enemies_list():
         health=150,
         energy=140,
         gold=20,
-        exp=525
+        exp=930
     )
     former_warrior.check_level()
     former_warrior.set_strength(4)
-    former_warrior.set_agility(2)
+    former_warrior.set_agility(1)
 
     return [dummy, villager, farmer, regular_fighter, ['Two-headed Snake', left_head_of_snake, right_head_of_snake],
             former_warrior]
