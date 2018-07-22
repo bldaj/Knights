@@ -40,10 +40,51 @@ def save_enemies_context(enemies) -> list:
     return enemies_context
 
 
+def get_exp_for_kill(hero, enemy):
+    base_exp = 100
+    exp_modifier = 1
+    level_bonus = 0
+
+    level_difference = enemy.level - hero.level
+
+    if level_difference > 0 and level_difference <= 3:
+        exp_modifier = 1.3
+        base_exp = 150
+    elif level_difference > 3 and level_difference <= 5:
+        exp_modifier = 1.7
+        base_exp = 250
+    elif level_difference > 5 and level_difference <= 10:
+        exp_modifier = 2
+        base_exp = 450
+
+    if enemy.level >= 2 and enemy.level <= 3:
+        level_bonus = 100
+    elif enemy.level >= 4 and enemy.level <= 6:
+        level_bonus = 200
+
+    print()
+    print('Lvl diff: {}'.format(level_difference))
+    print('Base exp: {}'.format(base_exp))
+    print('Exp mult: {}'.format(hero.exp_multiplier))
+    print('Exp modifier: {}'.format(exp_modifier))
+    print('Lvl bonus: {}'.format(level_bonus))
+
+    print('Curr exp: {}'.format(hero.exp))
+
+    print()
+
+    exp = round(base_exp * hero.exp_multiplier * exp_modifier + level_bonus)
+    print('You got {0} exp'.format(exp))
+    hero.exp += exp
+
+    print('After exp: {}'.format(hero.exp))
+
+
+
 def hit_chance(attacking_character, defending_character):
     print('Attacking agility: {}'.format(attacking_character.agility))
     print('Defending agility: {}'.format(defending_character.agility))
-    chance = ((attacking_character.agility - defending_character.agility) / attacking_character.agility) * 100
+    chance = round(((attacking_character.agility - defending_character.agility) / attacking_character.agility) * 100)
 
     if chance == 0:
         chance = randint(1, 50)
@@ -248,7 +289,7 @@ def battle(hero, enemies):
                 if is_enemy_dead(enemy=enemy):
                     queue.remove(enemy)
                     enemies_count -= 1
-                    hero.exp += round(enemy.exp * hero.exp_multiplier)
+                    get_exp_for_kill(hero=hero, enemy=enemy)
                     hero.gold += enemy.gold
             else:
                 enemy_action(hero=hero, enemy=character)
