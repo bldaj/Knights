@@ -58,6 +58,7 @@ def create_enemies_list():
     )
     dummy.check_level()
     dummy.set_strength(-10)
+    dummy.set_agility(-5)
 
     villager = Enemy(
         name='Villager',
