@@ -80,49 +80,63 @@ def get_exp_for_kill(hero, enemy):
     print('After exp: {}'.format(hero.exp))
 
 
-
 def hit_chance(attacking_character, defending_character):
-    print('Attacking agility: {}'.format(attacking_character.agility))
-    print('Defending agility: {}'.format(defending_character.agility))
-    chance = round(((attacking_character.agility - defending_character.agility) / attacking_character.agility) * 100)
+    agility_difference = attacking_character.agility - defending_character.agility
 
-    if chance == 0:
-        chance = randint(1, 50)
-    elif chance < 0:
-        chance = randint(1, 30)
-    elif chance >= 100:
-        chance = 80
-    print('Hit chance: {0}'.format(chance))
+    if agility_difference > 0:
+        chance = round((agility_difference / attacking_character.agility) * 100)
+
+        if chance <= 0:
+            chance = randint(1, 30)
+        elif chance >= 100:
+            chance = 80
+
+        return chance
+    else:
+        return randint(1, 20)
 
 
 def enemy_action(hero, enemy):
+    chance = hit_chance(attacking_character=enemy, defending_character=hero)
+
     cmd = choice(['1', '2', '3'])
 
     if cmd == '1':
-        enemy.energy -= 15
-        head_damage = int(40 + enemy.strength * HEAD_DAMAGE_MODIFIER)
+        if chance >= randint(1, 100):
+            enemy.energy -= 15
+            head_damage = int(40 + enemy.strength * HEAD_DAMAGE_MODIFIER)
 
-        hero.health -= head_damage
+            hero.health -= head_damage
 
-        display_enemy_choice(enemy.name, 'head', head_damage)
+            display_enemy_choice(enemy.name, 'head', head_damage)
+        else:
+            display_enemy_miss()
     elif cmd == '2':
-        enemy.energy -= 10
-        body_damage = int(30 + enemy.strength * BODY_DAMAGE_MODIFIER)
+        if chance >= randint(1, 100):
+            enemy.energy -= 10
+            body_damage = int(30 + enemy.strength * BODY_DAMAGE_MODIFIER)
 
-        hero.health -= body_damage
+            hero.health -= body_damage
 
-        display_enemy_choice(enemy.name, 'body', body_damage)
+            display_enemy_choice(enemy.name, 'body', body_damage)
+        else:
+            display_enemy_miss()
     elif cmd == '3':
-        enemy.energy -= 10
-        legs_damage = int(20 + enemy.strength * LEGS_DAMAGE_MODIFIER)
+        if chance >= randint(1, 100):
+            enemy.energy -= 10
+            legs_damage = int(20 + enemy.strength * LEGS_DAMAGE_MODIFIER)
 
-        hero.health -= legs_damage
+            hero.health -= legs_damage
 
-        display_enemy_choice(enemy.name, 'legs', legs_damage)
+            display_enemy_choice(enemy.name, 'legs', legs_damage)
+        else:
+            display_enemy_miss()
 
 
 def hero_action(hero, enemy):
-    hit_chance(hero, enemy)
+    chance = hit_chance(attacking_character=hero, defending_character=enemy)
+    print('Hit chance: {0}'.format(chance))
+
     head_damage = int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
     body_damage = int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
     legs_damage = int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
@@ -135,14 +149,23 @@ def hero_action(hero, enemy):
     cmd = get_cmd()
 
     if cmd == '1':
-        hero.energy -= 15
-        enemy.health -= head_damage
+        if chance >= randint(1, 100):
+            hero.energy -= 15
+            enemy.health -= head_damage
+        else:
+            print('Miss')
     elif cmd == '2':
-        hero.energy -= 10
-        enemy.health -= body_damage
+        if chance >= randint(1, 100):
+            hero.energy -= 10
+            enemy.health -= body_damage
+        else:
+            print('Miss')
     elif cmd == '3':
-        hero.energy -= 5
-        enemy.health -= legs_damage
+        if chance >= randint(1, 100):
+            hero.energy -= 5
+            enemy.health -= legs_damage
+        else:
+            print('Miss')
     # elif cmd == '4':
     #     pass
     else:
@@ -156,6 +179,10 @@ def display_turn(turn, hero_name, enemy_name):
         print('{0} begins'.format(hero_name))
     elif turn == 2:
         print('{0} begins'.format(enemy_name))
+
+
+def display_enemy_miss():
+    print('Enemy has missed')
 
 
 def display_enemy_choice(enemy_name, enemy_choice, damage):
