@@ -6,12 +6,12 @@ class Character:
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
         self.name = name
         self.health = health
+        self.max_health = health
+        self.max_energy = energy
         self.energy = energy
         self.gold = gold
         self.exp = exp
         self.level = level
-        self.max_health = health
-        self.max_energy = energy
         self.strength = 1
         self.agility = 1
         self.intelligence = 1
