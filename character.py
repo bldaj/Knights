@@ -81,28 +81,28 @@ class Hero(Character):
         while True:
             self.display_stats()
 
-            commands = ['Resume', 'Increase strength', 'Increase agility', 'Increase intelligence']
+            commands = ['Increase strength', 'Increase agility', 'Increase intelligence', 'Return back']
             display_commands(commands=commands)
 
             cmd = get_cmd()
 
             if cmd == '1':
-                return
-            elif cmd == '2':
                 if self._is_enough_points():
                     self._increase_strength()
                 else:
                     print("You don't have enough stat points")
-            elif cmd == '3':
+            elif cmd == '2':
                 if self._is_enough_points():
                     self._increase_agility()
                 else:
                     print("You don't have enough action points")
-            elif cmd == '4':
+            elif cmd == '3':
                 if self._is_enough_points():
                     self._increase_intelligence()
                 else:
                     print("You don't have enough action points")
+            elif cmd == '4':
+                return
             else:
                 display_incorrect_command()
 
