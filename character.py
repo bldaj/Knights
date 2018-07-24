@@ -51,7 +51,10 @@ class Hero(Character):
         print('Strength: {0}\n'
               'Agility: {1}\n'
               'Intelligence: {2}\n'
-              'Speed attack: {3}'.format(self.strength, self.agility, self.intelligence, self.speed_attack))
+              'Speed attack: {3}\n'
+              'Physical resistance: {4}\n'
+              'Magical resistance: {5}'.format(self.strength, self.agility, self.intelligence, self.speed_attack,
+                                               self.physical_resistance, self.magical_resistance))
         print('-' * 40)
         print('You have stat points: {0}'.format(self.stat_points))
 
