@@ -62,16 +62,16 @@ def get_exp_for_kill(hero, enemy):
     elif enemy.level >= 4 and enemy.level <= 6:
         level_bonus = 200
 
-    print()
-    print('Lvl diff: {}'.format(level_difference))
-    print('Base exp: {}'.format(base_exp))
-    print('Exp mult: {}'.format(hero.exp_multiplier))
-    print('Exp modifier: {}'.format(exp_modifier))
-    print('Lvl bonus: {}'.format(level_bonus))
-
-    print('Curr exp: {}'.format(hero.exp))
-
-    print()
+    # print()
+    # print('Lvl diff: {}'.format(level_difference))
+    # print('Base exp: {}'.format(base_exp))
+    # print('Exp mult: {}'.format(hero.exp_multiplier))
+    # print('Exp modifier: {}'.format(exp_modifier))
+    # print('Lvl bonus: {}'.format(level_bonus))
+    #
+    # print('Curr exp: {}'.format(hero.exp))
+    #
+    # print()
 
     exp = round(base_exp * hero.exp_multiplier * exp_modifier + level_bonus)
     print('You got {0} exp'.format(exp))
@@ -86,10 +86,10 @@ def hit_chance(attacking_character, defending_character):
     if agility_difference > 0:
         chance = round((agility_difference / attacking_character.agility) * 100)
 
-        if chance <= 0:
-            chance = randint(1, 30)
-        elif chance >= 100:
-            chance = 80
+        if chance < 0:
+            chance = randint(1, 20)
+        elif chance > 100:
+            chance = 100
 
         return chance
     else:
