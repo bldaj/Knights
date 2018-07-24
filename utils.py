@@ -14,5 +14,13 @@ def display_commands(commands: list):
         print('Commands are not list type')
 
 
+def display_load_successful():
+    print('Loaded successfully')
+
+
+def display_save_successful():
+    print('Saved successfully')
+
+
 def get_cmd(message='Make your choice: '):
     return input(message)

@@ -34,6 +34,8 @@ def save_game(hero, enemies):
     with open('enemies.pickle', 'wb') as f2:
         pickle.dump(enemies, f2)
 
+    display_save_successful()
+
 
 def load_game(hero, enemies: list):
     with open('save.pickle', 'rb') as f:
@@ -47,9 +49,19 @@ def load_game(hero, enemies: list):
     hero.gold = loaded_hero.gold
     hero.exp = loaded_hero.exp
     hero.level = loaded_hero.level
+    hero.strength = loaded_hero.strength
+    hero.agility = loaded_hero.agility
+    hero.intelligence = loaded_hero.intelligence
+    hero.physical_resistance = loaded_hero.physical_resistance
+    hero.magical_resistance = loaded_hero.magical_resistance
+    hero.stat_points = loaded_hero.stat_points
+    hero.speed_attack = loaded_hero.speed_attack
+    hero.inventory = loaded_hero.inventory
 
     with open('enemies.pickle', 'rb') as f2:
         enemies = pickle.load(f2)
+
+    display_load_successful()
 
     return hero, enemies
 
