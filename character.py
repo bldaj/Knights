@@ -119,7 +119,7 @@ class Hero(Character):
         self.strength += 1
         self.max_health += 2
         self.health += 2
-        self.physical_resistance += 1
+        self.physical_resistance = round(0.1 + self.physical_resistance, 3)
         self.stat_points -= 1
 
     def _increase_agility(self):
@@ -129,7 +129,7 @@ class Hero(Character):
 
     def _increase_intelligence(self):
         self.intelligence += 1
-        self.magical_resistance += 1
+        self.magical_resistance = round(0.1 + self.magical_resistance, 3)
         self.stat_points -= 1
 
     def display_inventory(self):
