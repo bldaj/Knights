@@ -106,7 +106,7 @@ def load_game(hero, enemies: list):
 def main_menu(hero, enemies):
     display_title('Main menu')
 
-    commands = ['Resume', 'Load game', 'Save game', 'Exit game']
+    commands = ['Back to the previous menu', 'Load game', 'Save game', 'Exit game']
 
     display_commands(commands=commands)
     cmd = get_cmd()

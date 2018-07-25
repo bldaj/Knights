@@ -84,7 +84,7 @@ class Hero(Character):
         while True:
             self.display_stats()
 
-            commands = ['Increase strength', 'Increase agility', 'Increase intelligence', 'Return back']
+            commands = ['Increase strength', 'Increase agility', 'Increase intelligence', 'Back to the previous menu']
             display_commands(commands=commands)
 
             cmd = get_cmd()
