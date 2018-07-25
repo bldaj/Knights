@@ -11,7 +11,7 @@ from marketplace import marketplace
 
 def _find_money(hero):
     gold_value = randint(1, 5)
-    print('{0} was walking forward the road when he found {1} gold'.format(hero.name, gold_value))
+    print('{0} was roaming around the Town when he found 1} gold'.format(hero.name, gold_value))
 
     hero.gold += gold_value
 

@@ -62,6 +62,7 @@ def get_exp_for_kill(hero, enemy):
     elif enemy.level >= 4 and enemy.level <= 6:
         level_bonus = 200
 
+    # TODO: test it
     # print()
     # print('Lvl diff: {}'.format(level_difference))
     # print('Base exp: {}'.format(base_exp))
@@ -74,10 +75,11 @@ def get_exp_for_kill(hero, enemy):
     # print()
 
     exp = round(base_exp * hero.exp_multiplier * exp_modifier + level_bonus)
-    print('You got {0} exp'.format(exp))
     hero.exp += exp
 
-    print('After exp: {}'.format(hero.exp))
+    print('You got {0} exp'.format(exp))
+
+    # print('After exp: {}'.format(hero.exp))
 
 
 def hit_chance(attacking_character, defending_character):
@@ -327,5 +329,5 @@ def battle(hero, enemies):
                     display_title("You lose!")
                     return False
 
-    display_title("You're a winner!")
+    display_title("You're the winner!")
     return True
