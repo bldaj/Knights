@@ -1,3 +1,4 @@
+from os import path
 from random import randint
 
 import pickle
@@ -70,32 +71,36 @@ def save_game(hero, enemies):
 
 
 def load_game(hero, enemies: list):
-    with open('save.pickle', 'rb') as f:
-        loaded_hero = pickle.load(f)
+    if path.exists('save.pickle') and path.exists('enemies.pickle'):
+        with open('save.pickle', 'rb') as f:
+            loaded_hero = pickle.load(f)
 
-    hero.name = loaded_hero.name
-    hero.health = loaded_hero.health
-    hero.max_health = loaded_hero.max_health
-    hero.energy = loaded_hero.energy
-    hero.max_energy = loaded_hero.max_energy
-    hero.gold = loaded_hero.gold
-    hero.exp = loaded_hero.exp
-    hero.level = loaded_hero.level
-    hero.strength = loaded_hero.strength
-    hero.agility = loaded_hero.agility
-    hero.intelligence = loaded_hero.intelligence
-    hero.physical_resistance = loaded_hero.physical_resistance
-    hero.magical_resistance = loaded_hero.magical_resistance
-    hero.stat_points = loaded_hero.stat_points
-    hero.speed_attack = loaded_hero.speed_attack
-    hero.inventory = loaded_hero.inventory
+        hero.name = loaded_hero.name
+        hero.health = loaded_hero.health
+        hero.max_health = loaded_hero.max_health
+        hero.energy = loaded_hero.energy
+        hero.max_energy = loaded_hero.max_energy
+        hero.gold = loaded_hero.gold
+        hero.exp = loaded_hero.exp
+        hero.level = loaded_hero.level
+        hero.strength = loaded_hero.strength
+        hero.agility = loaded_hero.agility
+        hero.intelligence = loaded_hero.intelligence
+        hero.physical_resistance = loaded_hero.physical_resistance
+        hero.magical_resistance = loaded_hero.magical_resistance
+        hero.stat_points = loaded_hero.stat_points
+        hero.speed_attack = loaded_hero.speed_attack
+        hero.inventory = loaded_hero.inventory
 
-    with open('enemies.pickle', 'rb') as f2:
-        enemies = pickle.load(f2)
+        with open('enemies.pickle', 'rb') as f2:
+            enemies = pickle.load(f2)
 
-    display_load_successful()
+        display_load_successful()
 
-    return hero, enemies
+        return hero, enemies
+    else:
+        print("You don't have save")
+        return hero, enemies
 
 
 def main_menu(hero, enemies):
