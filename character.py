@@ -20,6 +20,10 @@ class Character:
         self.stat_points = 1
         self.speed_attack = 1
         self.inventory = []
+        self.helmet = None
+        self.breastplate = None
+        self.bracers = None
+        self.legplates = None
 
     def __repr__(self):
         return self.name
@@ -135,3 +139,7 @@ class Hero(Character):
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
             print("%d: %s" % (i+1, item.name))
+
+    def set_helmet(self, helmet):
+        self.health = helmet
+        self.physical_resistance += helmet.protection
