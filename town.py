@@ -133,7 +133,7 @@ def town_menu(hero, enemies: list):
                     else:
                         hero.health = 0
         elif cmd == '3':
-            display_commands(["Resume", "Show hero's information", "Set stat points"])
+            display_commands(["Back to the previous menu", "Show hero's information", "Set stat points"])
 
             cmd = get_cmd()
 
