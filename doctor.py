@@ -25,15 +25,13 @@ def _check_money(hero_money, cost):
 
 
 def doctor(hero):
-    # TODO: if hero health less than 0 set it to 0 and only then heal him
     display_title('Doctor')
 
     commands = ['Smear a medicinal ointment (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
                 'Take surgical care (150 hp/ 30 gold)', 'Back to the previous menu']
 
     while True:
-        print('Your health: {0}/{1}\nYou have {2} gold'.format(0 if hero.health < 0 else hero.health,
-                                                               hero.max_health, hero.gold))
+        print('Your health: {0}/{1}\nYou have {2} gold'.format(hero.health, hero.max_health, hero.gold))
         display_commands(commands=commands)
 
         cmd = get_cmd()

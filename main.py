@@ -54,6 +54,7 @@ def tutorial():
         hero.level_up()
     else:
         print('You managed to lose even during the tutorial...')
+        exit()
 
 
 def initialize_hero():
