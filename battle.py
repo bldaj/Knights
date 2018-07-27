@@ -62,24 +62,10 @@ def get_exp_for_kill(hero, enemy):
     elif enemy.level >= 4 and enemy.level <= 6:
         level_bonus = 200
 
-    # TODO: test it
-    # print()
-    # print('Lvl diff: {}'.format(level_difference))
-    # print('Base exp: {}'.format(base_exp))
-    # print('Exp mult: {}'.format(hero.exp_multiplier))
-    # print('Exp modifier: {}'.format(exp_modifier))
-    # print('Lvl bonus: {}'.format(level_bonus))
-    #
-    # print('Curr exp: {}'.format(hero.exp))
-    #
-    # print()
-
     exp = round(base_exp * hero.exp_multiplier * exp_modifier + level_bonus)
     hero.exp += exp
 
     print('You got {0} exp'.format(exp))
-
-    # print('After exp: {}'.format(hero.exp))
 
 
 def hit_chance(attacking_character, defending_character):
@@ -115,7 +101,7 @@ def enemy_action(hero, enemy):
 
             display_enemy_choice(enemy.name, 'head', head_damage)
         else:
-            display_enemy_miss()
+            display_enemy_miss(enemy.name)
     elif cmd == '2':
         if chance >= randint(1, 100):
             enemy.energy -= 10
@@ -128,7 +114,7 @@ def enemy_action(hero, enemy):
 
             display_enemy_choice(enemy.name, 'body', body_damage)
         else:
-            display_enemy_miss()
+            display_enemy_miss(enemy.name)
     elif cmd == '3':
         if chance >= randint(1, 100):
             enemy.energy -= 10
@@ -141,7 +127,7 @@ def enemy_action(hero, enemy):
 
             display_enemy_choice(enemy.name, 'legs', legs_damage)
         else:
-            display_enemy_miss()
+            display_enemy_miss(enemy.name)
 
 
 def hero_action(hero, enemy):
@@ -161,22 +147,25 @@ def hero_action(hero, enemy):
 
     if cmd == '1':
         if chance >= randint(1, 100):
-            hero.energy -= 15
             enemy.health -= head_damage
         else:
             print('Miss')
+        hero.energy -= 15
+
     elif cmd == '2':
         if chance >= randint(1, 100):
-            hero.energy -= 10
             enemy.health -= body_damage
         else:
             print('Miss')
+        hero.energy -= 10
+
     elif cmd == '3':
         if chance >= randint(1, 100):
-            hero.energy -= 5
             enemy.health -= legs_damage
         else:
             print('Miss')
+        hero.energy -= 5
+
     # elif cmd == '4':
     #     pass
     else:
@@ -192,8 +181,8 @@ def display_turn(turn, hero_name, enemy_name):
         print('{0} begins'.format(enemy_name))
 
 
-def display_enemy_miss():
-    print('Enemy has missed')
+def display_enemy_miss(enemy_name: str):
+    print('{0} has missed'.format(enemy_name))
 
 
 def display_enemy_choice(enemy_name, enemy_choice, damage):

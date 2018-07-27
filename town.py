@@ -7,39 +7,16 @@ from utils import *
 from battle import battle
 from doctor import doctor
 from marketplace import marketplace
-
-
-def _find_money(hero):
-    gold_value = randint(1, 5)
-    print('{0} was roaming around the Town when he found 1} gold'.format(hero.name, gold_value))
-
-    hero.gold += gold_value
-
-
-def _sacrifice_the_poor(hero):
-    if hero.gold > 0:
-        gold_value = randint(1, 5)
-
-        if gold_value > hero.gold:
-            gold_value = hero.gold
-
-        print('{0} sacrificed the poor {1} gold'.format(hero.name, gold_value))
-
-        hero.gold -= gold_value
-    else:
-        gold_value = randint(1, 3)
-        print('The beggar took pity on you and gave you {0} gold'.format(gold_value))
-
-        hero.gold += gold_value
+from events import find_money, sacrifice_the_poor
 
 
 def walk_around(hero):
     cmd = randint(1, 2)
 
     if cmd == 1:
-        _find_money(hero)
+        find_money(hero)
     elif cmd == 2:
-        _sacrifice_the_poor(hero)
+        sacrifice_the_poor(hero)
 
 
 def choose_enemy(enemies: list):
