@@ -29,7 +29,7 @@ def doctor(hero):
     display_title('Doctor')
 
     commands = ['Smear a medicinal ointment (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
-                'Apply surgical care (150 hp/ 30 gold)', 'Back to the previous menu']
+                'Take surgical care (150 hp/ 30 gold)', 'Back to the previous menu']
 
     while True:
         print('Your health: {0}/{1}\nYou have {2} gold'.format(0 if hero.health < 0 else hero.health,
