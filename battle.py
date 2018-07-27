@@ -106,7 +106,10 @@ def enemy_action(hero, enemy):
     if cmd == '1':
         if chance >= randint(1, 100):
             enemy.energy -= 15
-            head_damage = int(40 + enemy.strength * HEAD_DAMAGE_MODIFIER)
+            head_damage = int((40 + enemy.strength * HEAD_DAMAGE_MODIFIER) - hero.physical_resistance)
+
+            if head_damage < 0:
+                head_damage = 0
 
             hero.health -= head_damage
 
@@ -116,7 +119,10 @@ def enemy_action(hero, enemy):
     elif cmd == '2':
         if chance >= randint(1, 100):
             enemy.energy -= 10
-            body_damage = int(30 + enemy.strength * BODY_DAMAGE_MODIFIER)
+            body_damage = int((30 + enemy.strength * BODY_DAMAGE_MODIFIER) - hero.physical_resistance)
+
+            if body_damage < 0:
+                body_damage = 0
 
             hero.health -= body_damage
 
@@ -126,7 +132,10 @@ def enemy_action(hero, enemy):
     elif cmd == '3':
         if chance >= randint(1, 100):
             enemy.energy -= 10
-            legs_damage = int(20 + enemy.strength * LEGS_DAMAGE_MODIFIER)
+            legs_damage = int((20 + enemy.strength * LEGS_DAMAGE_MODIFIER) - hero.physical_resistance)
+
+            if legs_damage < 0:
+                legs_damage = 9
 
             hero.health -= legs_damage
 
@@ -139,9 +148,9 @@ def hero_action(hero, enemy):
     chance = hit_chance(attacking_character=hero, defending_character=enemy)
     print('Hit chance: {0}'.format(chance))
 
-    head_damage = int(40 + hero.strength * HEAD_DAMAGE_MODIFIER)
-    body_damage = int(30 + hero.strength * BODY_DAMAGE_MODIFIER)
-    legs_damage = int(20 + hero.strength * LEGS_DAMAGE_MODIFIER)
+    head_damage = int((40 + hero.strength * HEAD_DAMAGE_MODIFIER) - enemy.physical_resistance)
+    body_damage = int((30 + hero.strength * BODY_DAMAGE_MODIFIER) - enemy.physical_resistance)
+    legs_damage = int((20 + hero.strength * LEGS_DAMAGE_MODIFIER) - enemy.physical_resistance)
 
     commands = ['Attack the head ({0} dmg/15 energy)'.format(head_damage),
                 'Attack the body ({0} dmg/10 energy)'.format(body_damage),
