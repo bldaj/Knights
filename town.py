@@ -19,6 +19,10 @@ def _find_money(hero):
 def _sacrifice_the_poor(hero):
     if hero.gold > 0:
         gold_value = randint(1, 5)
+
+        if gold_value > hero.gold:
+            gold_value = hero.gold
+
         print('{0} sacrificed the poor {1} gold'.format(hero.name, gold_value))
 
         hero.gold -= gold_value
