@@ -153,9 +153,8 @@ def town_menu(hero, enemies: list):
             if cmd == '1':
                 continue
             elif cmd == '2':
-                display_title('Stats')
-                hero.display_hero_infrormation()
-                hero.display_stats()
+                display_title("Hero's info")
+                hero.display_summury_information()
             elif cmd == '3':
                 hero.increase_attributes()
             else:

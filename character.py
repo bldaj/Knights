@@ -23,10 +23,26 @@ class Character:
         self.helmet = None
         self.breastplate = None
         self.bracers = None
-        self.legplates = None
+        self.boots = None
 
     def __repr__(self):
         return self.name
+
+    def set_helmet(self, helmet):
+        self.helmet = helmet
+        self.physical_resistance += helmet.protection
+
+    def set_breastplate(self, breastplate):
+        self.breastplate = breastplate
+        self.physical_resistance += breastplate.protection
+
+    def set_bracers(self, bracers):
+        self.bracers = bracers
+        self.physical_resistance += bracers.protection
+
+    def set_boots(self, boots):
+        self.boots = boots
+        self.physical_resistance += boots.protection
 
 
 class Hero(Character):
@@ -44,12 +60,28 @@ class Hero(Character):
             else:
                 print('Try again')
 
-    def display_hero_infrormation(self):
+    def display_summury_information(self):
+        self.display_hero_information()
+        self.display_equipment()
+        self.display_stats()
+
+    def display_hero_information(self):
         print('Name: {0} Level: {1}\n'
               'Health: {2}/{3} Experience: {4}\n'
               'Energy: {5}/{6} Gold: {7}\n'.format(self.name, self.level,
                                                    self.health, self.max_health, self.exp,
                                                    self.energy, self.max_energy, self.gold))
+
+    def display_equipment(self):
+        helmet = self.helmet.name if self.helmet is not None else 'Not equipped'
+        breastplate = self.breastplate.name if self.breastplate is not None else 'Not equipped'
+        bracers = self.bracers.name if self.bracers is not None else 'Not equipped'
+        boots = self.boots.name if self.boots is not None else 'Not equipped'
+
+        print('Helmet: {0}\n'
+              'Armor: {1}\n'
+              'Bracers: {2}\n'
+              'Boots: {3}\n'.format(helmet, breastplate, bracers, boots))
 
     def display_stats(self):
         print('Strength: {0}\n'
@@ -139,7 +171,3 @@ class Hero(Character):
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
             print("%d: %s" % (i+1, item.name))
-
-    def set_helmet(self, helmet):
-        self.health = helmet
-        self.physical_resistance += helmet.protection

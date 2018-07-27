@@ -6,6 +6,7 @@ from battle import battle
 from town import town_menu
 from enemies import create_enemies_list
 from character import Hero
+from items.armor import tunic, light_boots
 
 enemies = create_enemies_list()
 hero = Hero()
@@ -64,6 +65,9 @@ def initialize_hero():
     hero.gold = 10
     hero.exp = 0
     hero.level = 1
+
+    hero.set_breastplate(tunic)
+    hero.set_boots(light_boots)
 
 
 def new_game():
