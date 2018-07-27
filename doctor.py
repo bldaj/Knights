@@ -28,8 +28,8 @@ def doctor(hero):
     # TODO: if hero health less than 0 set it to 0 and only then heal him
     display_title('Doctor')
 
-    commands = ['Heal a little (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
-                'Take medical care (150 hp/ 30 gold)', 'Back to the previous menu']
+    commands = ['Smear a medicinal ointment (15 hp/ 5 gold)', 'Bandage the wounds (40 hp/ 10 gold)',
+                'Apply surgical care (150 hp/ 30 gold)', 'Back to the previous menu']
 
     while True:
         print('Your health: {0}/{1}\nYou have {2} gold'.format(0 if hero.health < 0 else hero.health,
