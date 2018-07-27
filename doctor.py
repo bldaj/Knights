@@ -39,26 +39,25 @@ def doctor(hero):
         cmd = get_cmd()
 
         if cmd == '1':
-            return
-        elif cmd == '2':
             if _check_money(hero_money=hero.gold, cost=5):
                 _heal(hero=hero, heal_value=15, cost=5)
                 _limit_health_value(hero=hero)
             else:
                 print("You don't have enough money")
 
-        elif cmd == '3':
+        elif cmd == '2':
             if _check_money(hero_money=hero.gold, cost=10):
                 _heal(hero=hero, heal_value=40, cost=10)
                 _limit_health_value(hero=hero)
             else:
                 print("You don't have enough money")
-
-        elif cmd == '4':
+        elif cmd == '3':
             if _check_money(hero_money=hero.gold, cost=30):
                 _heal(hero=hero, heal_value=150, cost=30)
                 _limit_health_value(hero=hero)
             else:
                 print("You don't have enough money")
+        elif cmd == '4':
+            return
         else:
             display_incorrect_command()
