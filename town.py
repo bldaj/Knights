@@ -120,14 +120,18 @@ def town_menu(hero, enemies: list):
         if cmd == '1':
             hero, enemies = main_menu(hero=hero, enemies=enemies)
         elif cmd == '2':
-            enemy = choose_enemy(enemies=enemies)
+            if hero.health <= 0:
+                print("I see you're the brave warrior! But I can't pass you on the Arena. "
+                      "Take a rest, heal yourself and come back later!")
+            else:
+                enemy = choose_enemy(enemies=enemies)
 
-            if enemy is not None:
-                if battle(hero=hero, enemies=enemy):
-                    enemies.remove(enemy)
-                    hero.level_up()
-                else:
-                    hero.health = 0
+                if enemy is not None:
+                    if battle(hero=hero, enemies=enemy):
+                        enemies.remove(enemy)
+                        hero.level_up()
+                    else:
+                        hero.health = 0
         elif cmd == '3':
             display_commands(["Resume", "Show hero's information", "Set stat points"])
 
