@@ -79,7 +79,7 @@ def calculate_hit_chance(attacking_character, defending_character, place_to_atta
         elif place_to_attack == 'body':
             chance = round(chance * BODY_HIT_MODIFIER)
         elif place_to_attack == 'arms':
-            chance = round(chance * ARMS_HIT_MODIFIEDR)
+            chance = round(chance * ARMS_HIT_MODIFIER)
         elif place_to_attack == 'legs':
             chance = round(chance * LEGS_HIT_MODIFIER)
 
@@ -99,7 +99,7 @@ def enemy_action(hero, enemy):
     arms_hit_chance = calculate_hit_chance(attacking_character=enemy, defending_character=hero, place_to_attack='arms')
     legs_hit_chance = calculate_hit_chance(attacking_character=enemy, defending_character=hero, place_to_attack='legs')
 
-    cmd = choice(['1', '2', '3'])
+    cmd = choice(['1', '2', '3', '4'])
 
     hero_armor = 0
 
@@ -109,7 +109,7 @@ def enemy_action(hero, enemy):
 
             if hero.helmet is not None:
                 hero_armor = hero.helmet.protection
-                enemy.helmet.durability -= 0
+                hero.helmet.durability -= 0
 
             head_damage = int((40 + enemy.strength * HEAD_DAMAGE_MODIFIER) - hero.physical_resistance - hero_armor)
 
@@ -121,6 +121,7 @@ def enemy_action(hero, enemy):
             display_enemy_choice(enemy.name, 'head', head_damage)
         else:
             display_enemy_miss(enemy.name)
+
     elif cmd == '2':
         if body_hit_chance >= randint(1, 100):
             enemy.energy -= 10
@@ -139,13 +140,33 @@ def enemy_action(hero, enemy):
             display_enemy_choice(enemy.name, 'body', body_damage)
         else:
             display_enemy_miss(enemy.name)
+
     elif cmd == '3':
+        if arms_hit_chance >= randint(1, 100):
+            enemy.energy -= 7
+
+            if hero.bracers is not None:
+                hero_armor = hero.bracers.protection
+                hero.bracers.durability -= 0
+
+            arms_damage = int((20 + enemy.strength * ARMS_DAMAGE_MODIFIER) - hero.physical_resistance - hero_armor)
+
+            if arms_damage < 0:
+                arms_damage = 0
+
+            hero.health -= arms_damage
+
+            display_enemy_choice(enemy.name, 'arms', arms_damage)
+        else:
+            display_enemy_miss(enemy.name)
+
+    elif cmd == '4':
         if legs_hit_chance >= randint(1, 100):
-            enemy.energy -= 10
+            enemy.energy -= 7
 
             if hero.boots is not None:
                 hero_armor = hero.boots.protection
-                enemy.boots.durability -= 0
+                hero.boots.durability -= 0
 
             legs_damage = int((20 + enemy.strength * LEGS_DAMAGE_MODIFIER) - hero.physical_resistance - hero_armor)
 
@@ -184,12 +205,13 @@ def hero_action(hero, enemy):
 
     head_damage = int((40 + hero.strength * HEAD_DAMAGE_MODIFIER) - enemy.physical_resistance - enemy_head_armor)
     body_damage = int((30 + hero.strength * BODY_DAMAGE_MODIFIER) - enemy.physical_resistance - enemy_body_armor)
+    arms_damage = int((20 + hero.strength * ARMS_DAMAGE_MODIFIER) - enemy.physical_resistance - enemy_arms_armor)
     legs_damage = int((20 + hero.strength * LEGS_DAMAGE_MODIFIER) - enemy.physical_resistance - enemy_legs_armor)
 
-    commands = ['Hit in head ({0} dmg/{1} energy) ({2}% chance)'.format(head_damage, 15, head_hit_chance),
-                'Hit in body ({0} dmg/{1} energy) ({2}% chance))'.format(body_damage, 10, body_hit_chance),
-                'Hit in legs ({0} dmg/{1} energy) ({2}% chance)'.format(legs_damage, 5, legs_hit_chance)]
-    display_commands(commands)
+    display_commands(['Hit in head ({0} dmg/{1} energy) ({2}% chance)'.format(head_damage, 15, head_hit_chance),
+                      'Hit in body ({0} dmg/{1} energy) ({2}% chance))'.format(body_damage, 10, body_hit_chance),
+                      'Hit in arms ({0} dmg/{1} energy) ({2}% chance)'.format(arms_damage, 7, arms_hit_chance),
+                      'Hit in legs ({0} dmg/{1} energy) ({2}% chance)'.format(legs_damage, 7, legs_hit_chance)])
 
     cmd = get_cmd()
 
@@ -214,14 +236,24 @@ def hero_action(hero, enemy):
         hero.energy -= 10
 
     elif cmd == '3':
-        if legs_damage >= randint(1, 100):
+        if arms_hit_chance >= randint(1, 100):
+            enemy.health -= arms_damage
+
+            if enemy.boots is not None:
+                enemy.bracers.durability -= 0
+        else:
+            print('Miss')
+        hero.energy -= 7
+
+    elif cmd == '4':
+        if legs_hit_chance >= randint(1, 100):
             enemy.health -= legs_damage
 
             if enemy.boots is not None:
                 enemy.boots.durability -= 0
         else:
             print('Miss')
-        hero.energy -= 5
+        hero.energy -= 7
 
     # elif cmd == '4':
     #     pass
