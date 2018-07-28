@@ -30,19 +30,15 @@ class Character:
 
     def set_helmet(self, helmet):
         self.helmet = helmet
-        self.physical_resistance += helmet.protection
 
     def set_breastplate(self, breastplate):
         self.breastplate = breastplate
-        self.physical_resistance += breastplate.protection
 
     def set_bracers(self, bracers):
         self.bracers = bracers
-        self.physical_resistance += bracers.protection
 
     def set_boots(self, boots):
         self.boots = boots
-        self.physical_resistance += boots.protection
 
 
 class Hero(Character):
