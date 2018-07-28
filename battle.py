@@ -239,7 +239,7 @@ def hero_action(hero, enemy):
         if arms_hit_chance >= randint(1, 100):
             enemy.health -= arms_damage
 
-            if enemy.boots is not None:
+            if enemy.bracers is not None:
                 enemy.bracers.durability -= 0
         else:
             print('Miss')
