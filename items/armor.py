@@ -1,6 +1,6 @@
 class Armor:
-    def __init__(self, type, name, description, protection_value, armor_level=1, rarity=1, durability=100):
-        self.type = type
+    def __init__(self, type_, name, description, protection_value, armor_level=1, rarity=1, durability=100):
+        self.type = type_
         self.name = name
         self.description = description
         self.protection = protection_value
@@ -10,5 +10,18 @@ class Armor:
         self.additional_effects = {}
 
 
-tunic = Armor(type='breastplate', name='Tunic', description='Light tunic', protection_value=1)
-light_boots = Armor(type='boots', name='Light boots', description='Light boots', protection_value=1)
+# Head armor
+leather_helmet = Armor(type_='helmet', name='Leather helmet', description='Leather helmet', protection_value=2)
+
+
+# Body armor
+tunic = Armor(type_='breastplate', name='Tunic', description='Tunic', protection_value=1)
+gambeson = Armor(type_='breastplate', name='Gambeson', description='Gambeson', protection_value=5)
+
+# Arms armor
+leather_bracers = Armor(type_='bracers', name='Leather bracers', description='Leather bracers', protection_value=2)
+
+
+# Legs armor
+light_boots = Armor(type_='boots', name='Light boots', description='Light boots', protection_value=1)
+leather_boots = Armor(type_='boots', name='Leather boots', description='Leather boots', protection_value=2)
