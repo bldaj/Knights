@@ -1,6 +1,8 @@
 from levels import LEVELS
 from character import Character
 
+from items.armor import *
+
 
 class Enemy(Character):
     def check_level(self):
@@ -60,6 +62,7 @@ def create_enemies_list():
     dummy.set_strength(-10)
     dummy.set_agility(-5)
 
+
     villager = Enemy(
         name='Villager',
         health=80,
@@ -69,6 +72,9 @@ def create_enemies_list():
     )
     villager.check_level()
     villager.set_strength(1)
+    villager.set_breastplate(tunic)
+    villager.set_boots(light_boots)
+
 
     farmer = Enemy(
         name='Farmer',
@@ -80,6 +86,10 @@ def create_enemies_list():
     farmer.check_level()
     farmer.set_strength(2)
     farmer.set_agility(1)
+    farmer.set_helmet(leather_helmet)
+    farmer.set_breastplate(tunic)
+    farmer.set_boots(light_boots)
+
 
     regular_fighter = Enemy(
         name='Regular fighter',
@@ -91,6 +101,9 @@ def create_enemies_list():
     regular_fighter.check_level()
     regular_fighter.set_strength(3)
     regular_fighter.set_agility(1)
+    regular_fighter.set_breastplate(gambeson)
+    regular_fighter.set_boots(light_boots)
+
 
     left_head_of_snake = Enemy(
         name='Left head of Snake',
@@ -112,6 +125,7 @@ def create_enemies_list():
     right_head_of_snake.check_level()
     right_head_of_snake.set_agility(4)
 
+
     former_warrior = Enemy(
         name='Former warrior',
         health=150,
@@ -122,6 +136,10 @@ def create_enemies_list():
     former_warrior.check_level()
     former_warrior.set_strength(4)
     former_warrior.set_agility(1)
+    former_warrior.set_helmet(leather_helmet)
+    former_warrior.set_breastplate(gambeson)
+    former_warrior.set_bracers(leather_bracers)
+    former_warrior.set_boots(leather_boots)
 
     return [dummy, villager, farmer, regular_fighter, ['Two-headed Snake', left_head_of_snake, right_head_of_snake],
             former_warrior]
