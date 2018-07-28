@@ -7,16 +7,18 @@ from utils import *
 from battle import battle
 from doctor import doctor
 from marketplace import marketplace
-from events import find_money, sacrifice_the_poor
+from events import find_money, sacrifice_the_poor, hear_the_whisper
 
 
 def walk_around(hero):
-    cmd = randint(1, 2)
+    cmd = randint(1, 3)
 
     if cmd == 1:
         find_money(hero)
     elif cmd == 2:
         sacrifice_the_poor(hero)
+    elif cmd == 3:
+        hear_the_whisper()
 
 
 def choose_enemy(enemies: list):

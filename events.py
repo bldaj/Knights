@@ -3,7 +3,7 @@ from random import randint
 
 def find_money(hero):
     gold_value = randint(1, 5)
-    print('You was roaming around the Town when he found {1} gold'.format(hero.name, gold_value))
+    print('You were roaming around the Town when you found {1} gold'.format(hero.name, gold_value))
 
     hero.gold += gold_value
 
@@ -24,5 +24,8 @@ def sacrifice_the_poor(hero):
 
         hero.gold += gold_value
 
+
+def hear_the_whisper():
+    print('You were walking a lane when when you heard the whisper: "All our Gods have abandoned us..."')
 
 
