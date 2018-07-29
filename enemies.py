@@ -11,18 +11,18 @@ class Enemy(Character):
                 continue
             elif self.exp <= exp:
                 self.level = level
-                self.stat_points += level
+                self.attribute_points += level
                 break
         else:
             self.level = level
-            self.stat_points += level
+            self.attribute_points += level
 
     def set_strength(self, value):
         if value > 0:
-            if value > self.stat_points:
-                value = self.stat_points
+            if value > self.attribute_points:
+                value = self.attribute_points
 
-            self.stat_points -= 1 * value
+            self.attribute_points -= 1 * value
 
         self.strength += 1 * value
         self.max_health += 2 * value
@@ -31,20 +31,20 @@ class Enemy(Character):
 
     def set_agility(self, value):
         if value > 0:
-            if value > self.stat_points:
-                value = self.stat_points
+            if value > self.attribute_points:
+                value = self.attribute_points
 
-            self.stat_points -= 1 * value
+            self.attribute_points -= 1 * value
 
         self.agility += 1 * value
         self.speed_attack += round(0.1 * value, 3)
 
     def set_intelligence(self, value):
         if value > 0:
-            if value > self.stat_points:
-                value = self.stat_points
+            if value > self.attribute_points:
+                value = self.attribute_points
 
-            self.stat_points -= 1 * value
+            self.attribute_points -= 1 * value
 
         self.intelligence += 1 * value
         self.magical_resistance += 1 * value

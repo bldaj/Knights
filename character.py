@@ -17,7 +17,7 @@ class Character:
         self.intelligence = 1
         self.physical_resistance = 1
         self.magical_resistance = 1
-        self.stat_points = 1
+        self.attribute_points = 1
         self.speed_attack = 1
         self.inventory = []
         self.helmet = None
@@ -59,7 +59,7 @@ class Hero(Character):
     def display_summury_information(self):
         self.display_hero_information()
         self.display_equipment()
-        self.display_stats()
+        self.display_attributes()
 
     def display_hero_information(self):
         print('Name: {0} Level: {1}\n'
@@ -79,7 +79,7 @@ class Hero(Character):
               'Bracers: {2}\n'
               'Boots: {3}\n'.format(helmet, breastplate, bracers, boots))
 
-    def display_stats(self):
+    def display_attributes(self):
         print('Strength: {0}\n'
               'Agility: {1}\n'
               'Intelligence: {2}\n'
@@ -88,7 +88,7 @@ class Hero(Character):
               'Magical resistance: {5}'.format(self.strength, self.agility, self.intelligence, self.speed_attack,
                                                self.physical_resistance, self.magical_resistance))
         print('-' * 40)
-        print('You have stat points: {0}'.format(self.stat_points))
+        print('You have attribute points: {0}'.format(self.attribute_points))
 
     def level_up(self):
         for level, exp in enumerate(LEVELS):
@@ -102,7 +102,7 @@ class Hero(Character):
             self._level_up(level)
 
     def _level_up(self, level):
-        self.stat_points += (level - self.level) * 2
+        self.attribute_points += (level - self.level) * 2
 
         self.level = level
         print('LEVEL UP\nYou got level {0}!'.format(self.level))
@@ -114,7 +114,7 @@ class Hero(Character):
 
     def increase_attributes(self):
         while True:
-            self.display_stats()
+            self.display_attributes()
 
             commands = ['Increase strength', 'Increase agility', 'Increase intelligence', 'Back to the previous menu']
             display_commands(commands=commands)
@@ -142,7 +142,7 @@ class Hero(Character):
                 display_incorrect_command()
 
     def _is_enough_points(self):
-        if self.stat_points > 0:
+        if self.attribute_points > 0:
             return True
         else:
             return False
@@ -152,17 +152,17 @@ class Hero(Character):
         self.max_health += 2
         self.health += 2
         self.physical_resistance = round(0.1 + self.physical_resistance, 3)
-        self.stat_points -= 1
+        self.attribute_points -= 1
 
     def _increase_agility(self):
         self.agility += 1
         self.speed_attack = round(0.1 + self.speed_attack, 3)
-        self.stat_points -= 1
+        self.attribute_points -= 1
 
     def _increase_intelligence(self):
         self.intelligence += 1
         self.magical_resistance = round(0.1 + self.magical_resistance, 3)
-        self.stat_points -= 1
+        self.attribute_points -= 1
 
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
