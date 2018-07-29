@@ -102,7 +102,7 @@ class Hero(Character):
             self._level_up(level)
 
     def _level_up(self, level):
-        self.stat_points += level - self.level
+        self.stat_points += (level - self.level) * 2
 
         self.level = level
         print('LEVEL UP\nYou got level {0}!'.format(self.level))
@@ -111,9 +111,6 @@ class Hero(Character):
         self.health = self.max_health
         self.max_energy += 10 * level
         self.energy = self.max_energy
-        self._increase_strength()
-        self._increase_agility()
-        self._increase_intelligence()
 
     def increase_attributes(self):
         while True:
@@ -127,19 +124,16 @@ class Hero(Character):
             if cmd == '1':
                 if self._is_enough_points():
                     self._increase_strength()
-                    self._deduct_points()
                 else:
                     print("You don't have enough stat points")
             elif cmd == '2':
                 if self._is_enough_points():
                     self._increase_agility()
-                    self._deduct_points()
                 else:
                     print("You don't have enough action points")
             elif cmd == '3':
                 if self._is_enough_points():
                     self._increase_intelligence()
-                    self._deduct_points()
                 else:
                     print("You don't have enough action points")
             elif cmd == '4':
@@ -158,23 +152,17 @@ class Hero(Character):
         self.max_health += 2
         self.health += 2
         self.physical_resistance = round(0.1 + self.physical_resistance, 3)
-        # self.stat_points -= 1
+        self.stat_points -= 1
 
     def _increase_agility(self):
         self.agility += 1
         self.speed_attack = round(0.1 + self.speed_attack, 3)
-        # self.stat_points -= 1
+        self.stat_points -= 1
 
     def _increase_intelligence(self):
         self.intelligence += 1
         self.magical_resistance = round(0.1 + self.magical_resistance, 3)
-        # self.stat_points -= 1
-
-    def _deduct_points(self, value=1):
-        if value <= self.stat_points:
-            self.stat_points -= value
-        else:
-            exit()
+        self.stat_points -= 1
 
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
