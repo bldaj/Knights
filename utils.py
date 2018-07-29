@@ -1,25 +1,26 @@
 def display_title(title):
-    print('{0:^20}\n'.format(title))
+    print('\n{0:^40}\n'.format(title))
 
 
 def display_incorrect_command():
     print('Incorrect command')
 
 
+def display_battle_result(message_result: str):
+    print('\n{0:^40}'.format(message_result))
+
+
 def display_commands(commands: list):
-    if isinstance(commands, list):
-        for i, command in enumerate(commands):
-            print('[%d]: %s' % (i+1, command))
-    else:
-        print('Commands are not list type')
+    for i, command in enumerate(commands):
+        print('[%d]: %s' % (i+1, command))
 
 
 def display_load_successful():
-    print('Loaded successfully')
+    print('\nLoaded successfully')
 
 
 def display_save_successful():
-    print('Saved successfully')
+    print('\nSaved successfully')
 
 
 def get_cmd(message='Make your choice: '):

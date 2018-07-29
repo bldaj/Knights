@@ -23,6 +23,7 @@ def walk_around(hero):
 
 def choose_enemy(enemies: list):
     while True:
+        print()
         print('Press Enter to resume')
 
         for i, enemy in enumerate(enemies):
@@ -110,11 +111,10 @@ def main_menu(hero, enemies):
 
 
 def town_menu(hero, enemies: list):
-    display_title('Town')
-
     commands = ['Menu', 'To the Arena', 'Character', 'Doctor', 'Marketplace', 'Walk around']
 
     while True:
+        display_title('Town')
         display_commands(commands=commands)
 
         cmd = get_cmd()

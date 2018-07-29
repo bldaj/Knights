@@ -72,7 +72,7 @@ def initialize_hero():
 
 
 def new_game():
-    print('STORY')
+    print('\nSTORY\n')
     initialize_hero()
     tutorial()
 

@@ -251,41 +251,45 @@ def hero_action(hero, enemy):
     if cmd == '1':
         if head_hit_chance >= randint(1, 100):
             enemy.health -= head_damage
+            display_delivered_damage(head_damage)
 
             if enemy.helmet is not None:
                 enemy.helmet.durability -= 0
         else:
-            print('Miss')
+            print('\nMiss')
         hero.energy -= 15
 
     elif cmd == '2':
         if body_hit_chance >= randint(1, 100):
             enemy.health -= body_damage
+            display_delivered_damage(body_damage)
 
             if enemy.breastplate is not None:
                 enemy.breastplate.durability -= 0
         else:
-            print('Miss')
+            print('\nMiss')
         hero.energy -= 10
 
     elif cmd == '3':
         if arms_hit_chance >= randint(1, 100):
             enemy.health -= arms_damage
+            display_delivered_damage(arms_damage)
 
             if enemy.bracers is not None:
                 enemy.bracers.durability -= 0
         else:
-            print('Miss')
+            print('\nMiss')
         hero.energy -= 7
 
     elif cmd == '4':
         if legs_hit_chance >= randint(1, 100):
             enemy.health -= legs_damage
+            display_delivered_damage(legs_damage)
 
             if enemy.boots is not None:
                 enemy.boots.durability -= 0
         else:
-            print('Miss')
+            print('\nMiss')
         hero.energy -= 7
 
     # elif cmd == '4':
@@ -293,6 +297,10 @@ def hero_action(hero, enemy):
     else:
         display_incorrect_command()
         hero_action(hero=hero, enemy=enemy)
+
+
+def display_delivered_damage(damage_value):
+    print("\nYou've delivered {0} damage".format(damage_value))
 
 
 # TODO: change according on character sequence
@@ -304,17 +312,17 @@ def display_turn(turn, hero_name, enemy_name):
 
 
 def display_enemy_miss(enemy_name: str):
-    print('{0} has missed'.format(enemy_name))
+    print('\n{0} has missed'.format(enemy_name))
 
 
 def display_enemy_choice(enemy_name, enemy_choice, damage):
     if isinstance(enemy_choice, str):
-        print('{0} has hit you in {1}'.format(enemy_name, enemy_choice))
+        print('\n{0} has hit you in {1}'.format(enemy_name, enemy_choice))
         print('You received {0} damage'.format(damage))
 
 
 def display_characters_info(hero, enemy):
-    print('{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
+    print('\n{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
                                                      'Enemy health', enemy.health))
 
 
@@ -325,6 +333,7 @@ def choose_enemy(enemies: list):
         return enemies[0]
 
     while True:
+        print()
         for i, enemy in enumerate(enemies):
             print('{0}: {1} ({2}/{3})'.format(i + 1, enemy.name, enemy.health, enemy.max_health))
 
@@ -413,9 +422,11 @@ def display_versus(hero, enemies):
     is_many = is_many_enemies(enemies)
 
     if is_many:
-        print('{0} VS {1}'.format(hero.name, enemies[0]))
+        text = '{0} VS {1}'.format(hero.name, enemies[0])
+        print('{0:^40}'.format(text))
     elif not is_many:
-        print('{0} VS {1}'.format(hero.name, enemies.name))
+        text = '{0} VS {1}'.format(hero.name, enemies)
+        print('{0:^40}'.format(text))
 
 
 def battle(hero, enemies):
@@ -452,8 +463,8 @@ def battle(hero, enemies):
                 if is_hero_dead(hero):
                     return_enemies_context(enemies[1:], enemies_context) if isinstance(enemies, list) else \
                         return_enemies_context(enemies, enemies_context)
-                    display_title("You lose!")
+                    display_battle_result("You lose!")
                     return False
 
-    display_title("You're the winner!")
+    display_battle_result("You're the winner!")
     return True
