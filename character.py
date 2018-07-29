@@ -19,6 +19,8 @@ class Character:
         self.magical_resistance = 1
         self.attribute_points = 1
         self.speed_attack = 1
+        self.hp_regen = 1
+        self.energy_regen = 1
         self.inventory = []
         self.helmet = None
         self.breastplate = None
@@ -27,6 +29,14 @@ class Character:
 
     def __repr__(self):
         return self.name
+
+    def health_regeneration(self):
+        if self.health < self.max_health:
+            self.health = round(self.health + self.hp_regen, 3)
+
+    def energy_regeneration(self):
+        if self.energy < self.max_energy:
+            self.energy = round(self.energy + self.energy_regen, 3)
 
     def set_helmet(self, helmet):
         self.helmet = helmet
@@ -152,6 +162,8 @@ class Hero(Character):
         self.max_health += 2
         self.health += 2
         self.physical_resistance = round(0.1 + self.physical_resistance, 3)
+        self.hp_regen = round(0.1 + self.hp_regen, 3)
+        self.energy_regen = round(0.1 + self.energy_regen, 3)
         self.attribute_points -= 1
 
     def _increase_agility(self):

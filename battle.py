@@ -272,7 +272,7 @@ def hero_action(hero, enemy):
         if arms_hit_chance >= randint(1, 100):
             enemy.health -= arms_damage
 
-            if enemy.bracers  is not None:
+            if enemy.bracers is not None:
                 enemy.bracers.durability -= 0
         else:
             print('Miss')
@@ -431,6 +431,9 @@ def battle(hero, enemies):
     while enemies_count != 0:
         for character in queue:
             if is_hero(character):
+                hero.health_regeneration()
+                hero.energy_regeneration()
+
                 enemy = choose_enemy(queue)
                 display_characters_info(hero=hero, enemy=enemy)
                 hero_action(hero=hero, enemy=enemy)
@@ -441,6 +444,9 @@ def battle(hero, enemies):
                     get_exp_for_kill(hero=hero, enemy=enemy)
                     hero.gold += enemy.gold
             else:
+                character.health_regeneration()
+                character.energy_regeneration()
+
                 enemy_action(hero=hero, enemy=character)
 
                 if is_hero_dead(hero):
