@@ -135,19 +135,20 @@ def town_menu(hero, enemies: list):
                     else:
                         hero.health = 0
         elif cmd == '3':
-            display_commands(["Back to the previous menu", "Show hero's information", "Set attribute points"])
+            while True:
+                display_commands(["Back to the previous menu", "Show hero's information", "Set attribute points"])
 
-            cmd = get_cmd()
+                cmd = get_cmd()
 
-            if cmd == '1':
-                continue
-            elif cmd == '2':
-                display_title("Hero's info")
-                hero.display_summury_information()
-            elif cmd == '3':
-                hero.increase_attributes()
-            else:
-                display_incorrect_command()
+                if cmd == '1':
+                    break
+                elif cmd == '2':
+                    display_title("Hero's info")
+                    hero.display_summury_information()
+                elif cmd == '3':
+                    hero.increase_attributes()
+                else:
+                    display_incorrect_command()
 
         elif cmd == '4':
             doctor(hero=hero)
