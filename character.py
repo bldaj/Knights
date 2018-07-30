@@ -30,6 +30,24 @@ class Character:
     def __repr__(self):
         return self.name
 
+    # TODO: make universal functions (set_strength, set_agility and set_intelligence) for Hero and Enemy
+
+    def _increase_strength(self):
+        self.strength += 1
+        self.max_health += 2
+        self.health += 2
+        self.physical_resistance = round(0.1 + self.physical_resistance, 3)
+        self.hp_regen = round(0.1 + self.hp_regen, 3)
+        self.energy_regen = round(0.1 + self.energy_regen, 3)
+
+    def _increase_agility(self):
+        self.agility += 1
+        self.speed_attack = round(0.1 + self.speed_attack, 3)
+
+    def _increase_intelligence(self):
+        self.intelligence += 1
+        self.magical_resistance = round(0.1 + self.magical_resistance, 3)
+
     def health_regeneration(self):
         if self.health < self.max_health:
             self.health = round(self.health + self.hp_regen, 3)
@@ -41,8 +59,38 @@ class Character:
     def set_helmet(self, helmet):
         self.helmet = helmet
 
+        if helmet.additional_effects:
+            for effect in helmet.additional_effects:
+                if 'strength' in effect :
+                    self._increase_strength()
+                elif 'agility' in effect:
+                    self._increase_agility()
+                elif 'intelligence' in effect:
+                    self._increase_intelligence()
+                elif 'property' in effect:
+                    pass
+                elif 'skill' in effect:
+                    pass
+                else:
+                    pass
+
     def set_breastplate(self, breastplate):
         self.breastplate = breastplate
+
+        if breastplate.additional_effects:
+            for effect in breastplate.additional_effects:
+                if effect == 'strength':
+                    self._increase_strength()
+                elif effect == 'agility':
+                    self._increase_agility()
+                elif effect == 'intelligence':
+                    self._increase_intelligence()
+                elif effect == 'property':
+                    pass
+                elif effect == 'skill':
+                    pass
+                else:
+                    pass
 
     def set_bracers(self, bracers):
         self.bracers = bracers
@@ -66,7 +114,7 @@ class Hero(Character):
             else:
                 print('Try again')
 
-    def display_summury_information(self):
+    def display_summary_information(self):
         self.display_hero_information()
         self.display_equipment()
         self.display_attributes()

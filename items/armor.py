@@ -1,5 +1,6 @@
 class Armor:
-    def __init__(self, type_, name, description, protection_value, armor_level=1, rarity=1, durability=100):
+    def __init__(self, type_, name, description, protection_value, armor_level=1, rarity=1, durability=100,
+                 additional_effects=()):
         self.type = type_
         self.name = name
         self.description = description
@@ -7,11 +8,14 @@ class Armor:
         self.armor_level = armor_level
         self.rarity = rarity
         self.durability = durability
-        self.additional_effects = {}
+        self.additional_effects = additional_effects
 
 
 # Head armor
-leather_helmet = Armor(type_='helmet', name='Leather helmet', description='Leather helmet', protection_value=2)
+leather_helmet = Armor(type_='helmet', name='Leather helmet', description='Leather helmet', protection_value=2,
+                       additional_effects=(
+                           {'agility': 1}
+                       ))
 
 
 # Body armor
