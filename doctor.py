@@ -39,6 +39,7 @@ def doctor(hero):
         if cmd == '1':
             if _check_money(hero_money=hero.gold, cost=5):
                 _heal(hero=hero, heal_value=15, cost=5)
+                # TODO: move it into _heal function
                 _limit_health_value(hero=hero)
             else:
                 print("You don't have enough money")
