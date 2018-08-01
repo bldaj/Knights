@@ -32,21 +32,27 @@ class Character:
 
     # TODO: make universal functions (set_strength, set_agility and set_intelligence) for Hero and Enemy
 
-    def _increase_strength(self):
-        self.strength += 1
-        self.max_health += 2
-        self.health += 2
-        self.physical_resistance = round(0.1 + self.physical_resistance, 3)
-        self.hp_regen = round(0.1 + self.hp_regen, 3)
-        self.energy_regen = round(0.1 + self.energy_regen, 3)
+    # TODO: add decrease methods (decrease_strength and etc.)
 
-    def _increase_agility(self):
+    def increase_strength(self, value=1):
+        self.strength += 1 * value
+        self.max_health += 2 * value
+        self.health += 2 * value
+        # TODO: if calculating result < 0 then round will round to 0 instead of negative number
+        self.physical_resistance = round(() + self.physical_resistance, 3)
+        self.hp_regen = round((0.1 * value) + self.hp_regen, 3)
+        self.energy_regen = round((0.1 * value) + self.energy_regen, 3)
+
+    def increase_agility(self):
         self.agility += 1
         self.speed_attack = round(0.1 + self.speed_attack, 3)
 
-    def _increase_intelligence(self):
+    def increase_intelligence(self):
         self.intelligence += 1
         self.magical_resistance = round(0.1 + self.magical_resistance, 3)
+
+    def deduct_attribute_points(self, value=1):
+        self.attribute_points -= value
 
     def health_regeneration(self):
         if self.health < self.max_health:
@@ -62,11 +68,11 @@ class Character:
         if helmet.additional_effects:
             for effect in helmet.additional_effects:
                 if 'strength' in effect :
-                    self._increase_strength()
+                    self.increase_strength()
                 elif 'agility' in effect:
-                    self._increase_agility()
+                    self.increase_agility()
                 elif 'intelligence' in effect:
-                    self._increase_intelligence()
+                    self.increase_intelligence()
                 elif 'property' in effect:
                     pass
                 elif 'skill' in effect:
@@ -80,11 +86,11 @@ class Character:
         if breastplate.additional_effects:
             for effect in breastplate.additional_effects:
                 if effect == 'strength':
-                    self._increase_strength()
+                    self.increase_strength()
                 elif effect == 'agility':
-                    self._increase_agility()
+                    self.increase_agility()
                 elif effect == 'intelligence':
-                    self._increase_intelligence()
+                    self.increase_intelligence()
                 elif effect == 'property':
                     pass
                 elif effect == 'skill':
@@ -181,17 +187,20 @@ class Hero(Character):
 
             if cmd == '1':
                 if self._is_enough_points():
-                    self._increase_strength()
+                    self.increase_strength()
+                    self.deduct_attribute_points()
                 else:
                     print("You don't have enough stat points")
             elif cmd == '2':
                 if self._is_enough_points():
-                    self._increase_agility()
+                    self.increase_agility()
+                    self.deduct_attribute_points()
                 else:
                     print("You don't have enough action points")
             elif cmd == '3':
                 if self._is_enough_points():
-                    self._increase_intelligence()
+                    self.increase_intelligence()
+                    self.deduct_attribute_points()
                 else:
                     print("You don't have enough action points")
             elif cmd == '4':
@@ -204,25 +213,6 @@ class Hero(Character):
             return True
         else:
             return False
-
-    def _increase_strength(self):
-        self.strength += 1
-        self.max_health += 2
-        self.health += 2
-        self.physical_resistance = round(0.1 + self.physical_resistance, 3)
-        self.hp_regen = round(0.1 + self.hp_regen, 3)
-        self.energy_regen = round(0.1 + self.energy_regen, 3)
-        self.attribute_points -= 1
-
-    def _increase_agility(self):
-        self.agility += 1
-        self.speed_attack = round(0.1 + self.speed_attack, 3)
-        self.attribute_points -= 1
-
-    def _increase_intelligence(self):
-        self.intelligence += 1
-        self.magical_resistance = round(0.1 + self.magical_resistance, 3)
-        self.attribute_points -= 1
 
     def display_inventory(self):
         for i, item in enumerate(self.inventory):
