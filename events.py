@@ -29,3 +29,9 @@ def hear_the_whisper():
     print('You were walking a lane when when you heard the whisper: "All our Gods have abandoned us..."')
 
 
+def go_to_run(hero):
+    print('You went to run.\nYou increased strength for 1 point')
+    # TODO: use increase strength method
+    # hero.strength += 1
+
+
