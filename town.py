@@ -73,7 +73,7 @@ def load_game(hero, enemies: list):
         hero.intelligence = loaded_hero.intelligence
         hero.physical_resistance = loaded_hero.physical_resistance
         hero.magical_resistance = loaded_hero.magical_resistance
-        hero.stat_points = loaded_hero.stat_points
+        hero.stat_points = loaded_hero.attribute_points
         hero.speed_attack = loaded_hero.speed_attack
         hero.inventory = loaded_hero.inventory
 
