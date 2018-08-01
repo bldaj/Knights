@@ -70,9 +70,6 @@ def initialize_hero():
     hero.set_breastplate(tunic)
     hero.set_boots(light_boots)
 
-    # TODO: test additional_effects
-    # hero.set_helmet(leather_helmet)
-
 
 def new_game():
     print('\nSTORY\n')
