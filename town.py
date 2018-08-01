@@ -7,7 +7,7 @@ from utils import *
 from battle import battle
 from doctor import doctor
 from marketplace import marketplace
-from rest import take_a_rest
+from tavern import tavern
 from events import find_money, sacrifice_the_poor, hear_the_whisper
 
 
@@ -112,7 +112,7 @@ def main_menu(hero, enemies):
 
 
 def town_menu(hero, enemies: list):
-    commands = ['Menu', 'To the Arena', 'Character', 'Doctor', 'Marketplace', 'Take a rest', 'Walk around']
+    commands = ['Menu', 'To the Arena', 'Character', 'Doctor', 'Marketplace', 'Tavern', 'Walk around']
 
     while True:
         display_title('Town')
@@ -156,7 +156,7 @@ def town_menu(hero, enemies: list):
         elif cmd == '5':
             marketplace()
         elif cmd == '6':
-            take_a_rest(hero)
+            tavern(hero)
         elif cmd == '7':
             walk_around(hero)
         else:
