@@ -25,7 +25,7 @@ class Enemy(Character):
             self.attribute_points -= 1 * value
             # self.deduct_attribute_points(1*value)
 
-        self.increase_strength(value=value)
+        # self.increase_strength(value=value)
 
         self.strength += 1 * value
         self.max_health += 2 * value
