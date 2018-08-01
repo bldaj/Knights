@@ -142,7 +142,7 @@ def town_menu(hero, enemies: list):
 
                 if cmd == '1':
                     display_title("Hero's info")
-                    hero.display_summury_information()
+                    hero.display_summary_information()
                 elif cmd == '2':
                     hero.increase_attributes()
                 elif cmd == '3':
