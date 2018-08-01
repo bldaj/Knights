@@ -35,13 +35,13 @@ class Character:
     # TODO: add decrease methods (decrease_strength and etc.)
 
     def increase_strength(self, value=1):
-        self.strength += 1 * value
-        self.max_health += 2 * value
-        self.health += 2 * value
+        self.strength += 1
+        self.max_health += 2
+        self.health += 2
         # TODO: if calculating result < 0 then round will round to 0 instead of negative number
-        self.physical_resistance = round(() + self.physical_resistance, 3)
-        self.hp_regen = round((0.1 * value) + self.hp_regen, 3)
-        self.energy_regen = round((0.1 * value) + self.energy_regen, 3)
+        self.physical_resistance = round(0.1 + self.physical_resistance, 3)
+        self.hp_regen = round(0.1 + self.hp_regen, 3)
+        self.energy_regen = round(0.1 + self.energy_regen, 3)
 
     def increase_agility(self):
         self.agility += 1
