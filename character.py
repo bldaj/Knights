@@ -21,6 +21,7 @@ class Character:
         self.speed_attack = 1
         self.hp_regen = 1
         self.energy_regen = 1
+        self.luck = 1
         self.inventory = []
         self.helmet = None
         self.breastplate = None
@@ -46,6 +47,7 @@ class Character:
     def increase_agility(self):
         self.agility += 1
         self.speed_attack = round(0.1 + self.speed_attack, 3)
+        self.luck += 1
 
     def increase_intelligence(self):
         self.intelligence += 1
