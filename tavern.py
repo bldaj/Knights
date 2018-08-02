@@ -1,4 +1,4 @@
-from utils import display_commands, get_cmd, display_incorrect_command
+from utils import display_title, display_greeting, display_commands, get_cmd, display_incorrect_command
 
 
 def _rent_room(hero):
@@ -7,7 +7,7 @@ def _rent_room(hero):
     luxury_room_cost = 30
 
     while True:
-        print('Your health: {0}/{1}\nYour energy: {2}/{3}\nYou have {4} gold'.format(
+        print('\nYour health: {0}/{1}\nYour energy: {2}/{3}\nYou have {4} gold\n'.format(
             hero.health, hero.max_health,
             hero.energy, hero.max_energy,
             hero.gold
@@ -35,14 +35,23 @@ def _rent_room(hero):
 
 
 def tavern(hero):
+    display_title('Tavern')
+    display_greeting()
+
     while True:
         display_commands(commands=[
-            'Rent the room'
+            'Rent the room',
+            'Have a drink',
+            'Back to the previous menu'
         ])
 
-        cmd = get_cmd(message='Hello, traveler!\nWhat do you want?')
+        cmd = get_cmd(message='What do you want?')
 
         if cmd == '1':
             _rent_room(hero)
+        elif cmd == '2':
+            print("Are you kidding me? I wanna sleep! Let's rent a room...")
+        elif cmd == '3':
+            return
         else:
             display_incorrect_command()
