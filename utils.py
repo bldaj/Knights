@@ -1,5 +1,19 @@
+from random import randint
+
+
 def display_title(title):
     print('\n{0:^40}\n'.format(title))
+
+
+def display_greeting():
+    greetings = [
+        'Hello, traveler!',
+        'Hello, stranger',
+        "Ah, it's you again"
+    ]
+
+    greeting = greetings[randint(0, len(greetings) - 1)]
+    print(greeting + '\n')
 
 
 def display_incorrect_command():
