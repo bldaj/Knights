@@ -39,3 +39,10 @@ def display_save_successful():
 
 def get_cmd(message='Make your choice: '):
     return input(message)
+
+
+def check_money(hero_money, cost):
+    if hero_money >= cost:
+        return True
+    else:
+        return False

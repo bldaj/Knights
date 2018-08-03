@@ -17,13 +17,6 @@ def _heal(hero, heal_value, cost):
         print("You're healthy, go away!")
 
 
-def _check_money(hero_money, cost):
-    if hero_money >= cost:
-        return True
-    else:
-        return False
-
-
 def doctor(hero):
     display_title('Doctor')
 
@@ -37,7 +30,7 @@ def doctor(hero):
         cmd = get_cmd()
 
         if cmd == '1':
-            if _check_money(hero_money=hero.gold, cost=5):
+            if check_money(hero_money=hero.gold, cost=5):
                 _heal(hero=hero, heal_value=15, cost=5)
                 # TODO: move it into _heal function
                 _limit_health_value(hero=hero)
@@ -45,13 +38,13 @@ def doctor(hero):
                 print("You don't have enough money")
 
         elif cmd == '2':
-            if _check_money(hero_money=hero.gold, cost=10):
+            if check_money(hero_money=hero.gold, cost=10):
                 _heal(hero=hero, heal_value=40, cost=10)
                 _limit_health_value(hero=hero)
             else:
                 print("You don't have enough money")
         elif cmd == '3':
-            if _check_money(hero_money=hero.gold, cost=30):
+            if check_money(hero_money=hero.gold, cost=30):
                 _heal(hero=hero, heal_value=150, cost=30)
                 _limit_health_value(hero=hero)
             else:
