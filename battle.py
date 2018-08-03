@@ -84,13 +84,13 @@ def calculate_hit_chance(attacking_character, defending_character, place_to_atta
             chance = round(chance * LEGS_HIT_MODIFIER)
 
         if chance < 0:
-            chance = randint(1, 20)
+            chance = randint(1, 40)
         elif chance > 100:
             chance = 100
 
         return chance
     else:
-        return randint(1, 20)
+        return randint(1, 40)
 
 
 def _analyze_chance(chances: dict, damages: dict) -> str:
