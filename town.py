@@ -132,9 +132,14 @@ def town_menu(hero, enemies: list):
                 if enemy is not None:
                     if battle(hero=hero, enemies=enemy):
                         enemies.remove(enemy)
+
+                        hero.health = round(hero.health, 3)
+                        hero.energy = round(hero.energy, 3)
+
                         hero.level_up()
                     else:
                         hero.health = 0
+                        hero.energy = 0
         elif cmd == '3':
             while True:
                 display_commands(["Show hero's information", "Set attribute points", "Back to the previous menu"])
