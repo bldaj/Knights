@@ -7,8 +7,8 @@ class Character:
         self.name = name
         self.health = health
         self.max_health = health
-        self.max_energy = energy
         self.energy = energy
+        self.max_energy = energy
         self.gold = gold
         self.exp = exp
         self.level = level

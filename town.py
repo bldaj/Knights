@@ -75,7 +75,14 @@ def load_game(hero, enemies: list):
         hero.magical_resistance = loaded_hero.magical_resistance
         hero.stat_points = loaded_hero.attribute_points
         hero.speed_attack = loaded_hero.speed_attack
+        hero.hp_regen = loaded_hero.hp_regen
+        hero.energy_regen = loaded_hero.energy_regen
+        hero.luck = loaded_hero.luck
         hero.inventory = loaded_hero.inventory
+        hero.helmet = loaded_hero.helmet
+        hero.breastplate = loaded_hero.breastplate
+        hero.bracers = loaded_hero.bracers
+        hero.boots = loaded_hero.boots
 
         with open('enemies.pickle', 'rb') as f2:
             enemies = pickle.load(f2)
