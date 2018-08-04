@@ -145,6 +145,7 @@ class Hero(Character):
         boots = self.boots.name if self.boots is not None else 'Not equipped'
         shield = self.shield if self.shield is not None else 'Not equipped'
 
+        # TODO: display durability
         print('Helmet: {0}\n'
               'Armor: {1}\n'
               'Bracers: {2}\n'
