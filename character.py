@@ -27,6 +27,7 @@ class Character:
         self.breastplate = None
         self.bracers = None
         self.boots = None
+        self.shield = None
 
     def __repr__(self):
         return self.name
@@ -106,6 +107,9 @@ class Character:
     def set_boots(self, boots):
         self.boots = boots
 
+    def set_shield(self, shield):
+        self.shield = shield
+
 
 class Hero(Character):
     def __init__(self, name=None, health=None, energy=None, gold=None, exp=None, level=None):
@@ -139,11 +143,13 @@ class Hero(Character):
         breastplate = self.breastplate.name if self.breastplate is not None else 'Not equipped'
         bracers = self.bracers.name if self.bracers is not None else 'Not equipped'
         boots = self.boots.name if self.boots is not None else 'Not equipped'
+        shield = self.shield if self.shield is not None else 'Not equipped'
 
         print('Helmet: {0}\n'
               'Armor: {1}\n'
               'Bracers: {2}\n'
-              'Boots: {3}\n'.format(helmet, breastplate, bracers, boots))
+              'Boots: {3}\n'
+              'Shield: {4}\n'.format(helmet, breastplate, bracers, boots, shield))
 
     def display_attributes(self):
         print('Strength: {0}\n'
