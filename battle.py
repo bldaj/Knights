@@ -242,9 +242,10 @@ def hero_action(hero, enemy):
     legs_damage = int((20 + hero.strength * LEGS_DAMAGE_MODIFIER) - enemy.physical_resistance - enemy_legs_armor)
 
     display_commands(['Hit in head ({0} dmg/{1} energy) ({2}% chance)'.format(head_damage, 15, head_hit_chance),
-                      'Hit in body ({0} dmg/{1} energy) ({2}% chance))'.format(body_damage, 10, body_hit_chance),
+                      'Hit in body ({0} dmg/{1} energy) ({2}% chance)'.format(body_damage, 10, body_hit_chance),
                       'Hit in arms ({0} dmg/{1} energy) ({2}% chance)'.format(arms_damage, 7, arms_hit_chance),
-                      'Hit in legs ({0} dmg/{1} energy) ({2}% chance)'.format(legs_damage, 7, legs_hit_chance)])
+                      'Hit in legs ({0} dmg/{1} energy) ({2}% chance)'.format(legs_damage, 7, legs_hit_chance),
+                      'Block (block {0} damage)'])
 
     cmd = get_cmd()
 
@@ -292,8 +293,9 @@ def hero_action(hero, enemy):
             print('\nMiss')
         hero.energy -= 7
 
-    # elif cmd == '4':
-    #     pass
+    elif cmd == '5':
+        pass
+
     else:
         display_incorrect_command()
         hero_action(hero=hero, enemy=enemy)
@@ -323,7 +325,7 @@ def display_enemy_choice(enemy_name, enemy_choice, damage):
 
 def display_characters_info(hero, enemy):
     print('\n{0}: {1} {4:>20}: {5}\n{2}: {3}\n'.format('Your health', hero.health, 'Your energy', hero.energy,
-                                                     'Enemy health', enemy.health))
+                                                       'Enemy health', enemy.health))
 
 
 def choose_enemy(enemies: list):
