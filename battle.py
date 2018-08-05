@@ -83,17 +83,28 @@ def calculate_hit_chance(attacking_character, defending_character, place_to_atta
         elif place_to_attack == 'legs':
             chance = round(chance * LEGS_HIT_MODIFIER)
 
-        if chance < 0:
-            chance = randint(1, 40)
-        elif chance > 100:
-            chance = 100
-
         return chance
     else:
         return randint(1, 40)
 
 
-def _analyze_chance(chances: dict, damages: dict) -> str:
+def analyze_hit_chance(chance, place_to_attack: str):
+    if chance > 100:
+        chance = 99
+
+    if place_to_attack == 'head' and chance < HEAD_HIT_CHANCE:
+        chance = HEAD_HIT_CHANCE
+    elif place_to_attack == 'body' and chance < BODY_HIT_CHANCE:
+        chance = BODY_HIT_CHANCE
+    elif place_to_attack == 'arms' and chance < ARMS_HIT_CHANCE:
+        chance = ARMS_HIT_CHANCE
+    elif place_to_attack == 'legs' and chance < LEGS_HIT_CHANCE:
+        chance = LEGS_HIT_CHANCE
+
+    return chance
+
+
+def enemy_action_logic(chances: dict, damages: dict) -> str:
     sorted_chances = sorted((v, k) for (k, v) in chances.items())
 
     max_damage = 0
@@ -150,15 +161,15 @@ def enemy_action(hero, enemy):
     if legs_damage < 0:
         legs_damage = 0
 
-    cmd = _analyze_chance(chances={'head': head_hit_chance,
-                                   'body': body_hit_chance,
-                                   'arms': arms_hit_chance,
-                                   'legs': legs_hit_chance},
-                          damages={'head': head_damage,
-                                   'body': body_damage,
-                                   'arms': arms_damage,
-                                   'legs': legs_damage}
-                          )
+    cmd = enemy_action_logic(chances={'head': head_hit_chance,
+                                      'body': body_hit_chance,
+                                      'arms': arms_hit_chance,
+                                      'legs': legs_hit_chance},
+                             damages={'head': head_damage,
+                                      'body': body_damage,
+                                      'arms': arms_damage,
+                                      'legs': legs_damage}
+                             )
 
     if cmd == 'head':
         if head_hit_chance >= randint(1, 100):
@@ -218,6 +229,11 @@ def hero_action(hero, enemy):
     body_hit_chance = calculate_hit_chance(attacking_character=hero, defending_character=enemy, place_to_attack='body')
     arms_hit_chance = calculate_hit_chance(attacking_character=hero, defending_character=enemy, place_to_attack='arms')
     legs_hit_chance = calculate_hit_chance(attacking_character=hero, defending_character=enemy, place_to_attack='legs')
+
+    head_hit_chance = analyze_hit_chance(chance=head_hit_chance, place_to_attack='head')
+    body_hit_chance = analyze_hit_chance(chance=body_hit_chance, place_to_attack='body')
+    arms_hit_chance = analyze_hit_chance(chance=arms_hit_chance, place_to_attack='arms')
+    legs_hit_chance = analyze_hit_chance(chance=legs_hit_chance, place_to_attack='legs')
 
     enemy_head_armor = 0
     enemy_body_armor = 0
