@@ -8,6 +8,7 @@ class Armor:
         self.armor_level = armor_level
         self.rarity = rarity
         self.durability = durability
+        self.max_durability = durability
         self.additional_effects = additional_effects
 
 
