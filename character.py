@@ -139,18 +139,33 @@ class Hero(Character):
                                                    self.energy, self.max_energy, self.gold))
 
     def display_equipment(self):
-        helmet = self.helmet.name if self.helmet is not None else 'Not equipped'
-        breastplate = self.breastplate.name if self.breastplate is not None else 'Not equipped'
-        bracers = self.bracers.name if self.bracers is not None else 'Not equipped'
-        boots = self.boots.name if self.boots is not None else 'Not equipped'
-        shield = self.shield if self.shield is not None else 'Not equipped'
+        helmet_name = self.helmet.name if self.helmet is not None else 'Not equipped'
+        breastplate_name = self.breastplate.name if self.breastplate is not None else 'Not equipped'
+        bracers_name = self.bracers.name if self.bracers is not None else 'Not equipped'
+        boots_name = self.boots.name if self.boots is not None else 'Not equipped'
+        shield_name = self.shield if self.shield is not None else 'Not equipped'
 
-        # TODO: display durability
-        print('Helmet: {0}\n'
-              'Armor: {1}\n'
-              'Bracers: {2}\n'
-              'Boots: {3}\n'
-              'Shield: {4}\n'.format(helmet, breastplate, bracers, boots, shield))
+        helmet_durability = self.helmet.durability if self.helmet is not None else 0
+        breastplate_durability = self.breastplate.durability if self.breastplate is not None else 0
+        bracers_durability = self.bracers.durability if self.bracers is not None else 0
+        boots_durability = self.boots.durability if self.boots is not None else 0
+        shield_durability = self.shield.durability if self.shield is not None else 0
+
+        helmet_max_durability = self.helmet.max_durability if self.helmet is not None else 0
+        breastplate_max_durability = self.breastplate.max_durability if self.breastplate is not None else 0
+        bracers_max_durability = self.bracers.max_durability if self.bracers is not None else 0
+        boots_max_durability = self.boots.max_durability if self.boots is not None else 0
+        shield_max_durability = self.shield.max_durability if self.shield is not None else 0
+
+        print('Helmet: {0} ({1}/{2})\n'
+              'Armor: {3} ({4}/{5})\n'
+              'Bracers: {6} ({7}/{8})\n'
+              'Boots: {9} ({10}/{11})\n'
+              'Shield: {12} ({13}/{14})\n'.format(helmet_name, helmet_durability, helmet_max_durability,
+                                                  breastplate_name, breastplate_durability, breastplate_max_durability,
+                                                  bracers_name, bracers_durability, bracers_max_durability,
+                                                  boots_name, boots_durability, boots_max_durability,
+                                                  shield_name, shield_durability, shield_max_durability))
 
     def display_attributes(self):
         print('Strength: {0}\n'
