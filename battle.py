@@ -261,7 +261,7 @@ def hero_action(hero, enemy):
                       'Hit in body ({0} dmg/{1} energy) ({2}% chance)'.format(body_damage, 10, body_hit_chance),
                       'Hit in arms ({0} dmg/{1} energy) ({2}% chance)'.format(arms_damage, 7, arms_hit_chance),
                       'Hit in legs ({0} dmg/{1} energy) ({2}% chance)'.format(legs_damage, 7, legs_hit_chance),
-                      'Block (block {0} damage)'])
+                      'Block'])
 
     cmd = get_cmd()
 
@@ -310,7 +310,8 @@ def hero_action(hero, enemy):
         hero.energy -= 7
 
     elif cmd == '5':
-        pass
+        print('\nOh, man, it seems that I have nothing to block...')
+        hero_action(hero=hero, enemy=enemy)
 
     else:
         display_incorrect_command()

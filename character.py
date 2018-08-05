@@ -28,9 +28,10 @@ class Character:
         self.bracers = None
         self.boots = None
         self.shield = None
+        self.is_block = False
 
-    def __repr__(self):
-        return self.name
+    def block(self):
+        self.is_block = True
 
     # TODO: make universal functions (set_strength, set_agility and set_intelligence) for Hero and Enemy
 
@@ -109,6 +110,9 @@ class Character:
 
     def set_shield(self, shield):
         self.shield = shield
+
+    def __repr__(self):
+        return self.name
 
 
 class Hero(Character):
