@@ -1,114 +1,148 @@
-from os import path
-import pickle
-
-from utils import *
-from battle import battle
-from town import town_menu
-from enemies import create_enemies_list
-from character import Hero
-from items.armor import tunic, light_boots, leather_helmet
-
-enemies = create_enemies_list()
-hero = Hero()
+import abc
 
 
-def load_game():
-    if path.exists('save.pickle') and path.exists('enemies.pickle'):
-        with open('save.pickle', 'rb') as f:
-            loaded_hero = pickle.load(f)
+# Commands
 
-        hero.name = loaded_hero.name
-        hero.health = loaded_hero.health
-        hero.max_health = loaded_hero.max_health
-        hero.energy = loaded_hero.energy
-        hero.max_energy = loaded_hero.max_energy
-        hero.gold = loaded_hero.gold
-        hero.exp = loaded_hero.exp
-        hero.level = loaded_hero.level
-        hero.strength = loaded_hero.strength
-        hero.agility = loaded_hero.agility
-        hero.intelligence = loaded_hero.intelligence
-        hero.physical_resistance = loaded_hero.physical_resistance
-        hero.magical_resistance = loaded_hero.magical_resistance
-        hero.attribute_points = loaded_hero.attribute_points
-        hero.speed_attack = loaded_hero.speed_attack
-        hero.hp_regen = loaded_hero.hp_regen
-        hero.energy_regen = loaded_hero.energy_regen
-        hero.luck = loaded_hero.luck
-        hero.inventory = loaded_hero.inventory
-        hero.helmet = loaded_hero.helmet
-        hero.breastplate = loaded_hero.breastplate
-        hero.bracers = loaded_hero.bracers
-        hero.boots = loaded_hero.boots
+class BaseCommand(abc.ABC):
+    """
+    """
 
-        with open('enemies.pickle', 'rb') as f2:
-            global enemies
-            enemies = pickle.load(f2)
+    @abc.abstractmethod
+    def execute(self):
+        pass
 
-        display_load_successful()
-        return True
-    else:
-        print("You don't have save")
-        return False
+    @property
+    def title(self):
+        return self.__class__.__name__
 
 
-def tutorial():
-    display_title('Tutorial')
-    print('Tutorial text')
+class NewGameCommand(BaseCommand):
+    """
+    """
 
-    if battle(hero=hero, enemies=enemies[0]):
-        enemies.remove(enemies[0])
-        hero.level_up()
-    else:
-        print('You managed to lose even during the tutorial...')
-        exit()
+    def execute(self):
+        pass
 
 
-def initialize_hero():
-    hero.create_name()
-    hero.health = 100
-    hero.energy = 100
-    hero.max_health = hero.health
-    hero.max_energy = hero.energy
-    hero.gold = 10
-    hero.exp = 0
-    hero.level = 1
+class SaveGameCommand(BaseCommand):
+    """
+    """
 
-    hero.set_breastplate(tunic)
-    hero.set_boots(light_boots)
+    def execute(self):
+        pass
 
 
-def new_game():
-    print('\nSTORY\n')
-    initialize_hero()
-    tutorial()
+class LoadGameCommand(BaseCommand):
+    """
+    """
+
+    def execute(self):
+        pass
 
 
-def main_menu():
-    display_title('Main menu')
+class ExitGameCommand(BaseCommand):
+    """
+    """
 
-    commands = ['New game', 'Load game', 'Exit game']
-
-    while True:
-        display_commands(commands)
-        cmd = get_cmd()
-
-        if cmd == '1':
-            new_game()
-            break
-        elif cmd == '2':
-            if load_game():
-                break
-        elif cmd == '3':
-            exit('Game exit')
-        else:
-            display_incorrect_command()
+    def execute(self):
+        exit('Game exited')
 
 
-def start():
-    main_menu()
-    town_menu(hero=hero, enemies=enemies)
+# Menu
+
+
+class BaseMenu(abc.ABC):
+
+    def __int__(self):
+        self._commands: list[BaseCommand] = []
+
+    @abc.abstractmethod
+    def run(self) -> None:
+        pass
+
+    def print_commands(self) -> None:
+        """
+        Prints available commands (self._commands param)
+        """
+        for i, command in enumerate(self._commands, start=1):
+            print(f'[{i}] {command.title}')
+
+    def exec_command(self, user_cmd):
+        try:
+            self._commands[user_cmd].execute()
+
+        # TODO: Specify list of exceptions
+        except Exception:
+            print('Incorrect command')
+
+    def get_user_cmd(self):
+        try:
+            cmd = int(input('Enter your choice: '))
+        except ValueError:
+            # TODO: Add common message
+            print('Incorrect command')
+
+            # Завершить вызов команд и обработку исключений
+
+
+class MainMenu(BaseMenu):
+
+    def __init__(self):
+        self._commands = [
+            NewGameCommand,
+            LoadGameCommand,
+            SaveGameCommand,
+            ExitGameCommand,
+        ]
+
+    def run(self):
+        self.print_commands()
+
+    def print_commands(self):
+        for i, command in enumerate(self._commands, start=1):
+            print(f'[{i}] {command.title}')
+
+
+# Game
+
+class CommandStack:
+    """
+    Stores history of executed command
+    """
+
+    def __init__(self):
+        self._stack = []
+
+    def add(self, command: BaseCommand):
+        self._stack.append(command)
+
+    def pop(self):
+        return self._stack.pop()
+
+
+class Game:
+    """
+    Main class to start game
+    """
+
+    def __init__(self):
+        self._command_stack = CommandStack()
+        self._main_menu = MainMenu()
+
+    def on_start(self):
+        self._main_menu.run()
+
+    def on_exit(self):
+        pass
+
+    def start(self):
+        """
+        Starts main game loop
+        """
+        self.on_start()
+        self.on_exit()
 
 
 if __name__ == '__main__':
-    start()
+    game = Game()
+    game.start()
