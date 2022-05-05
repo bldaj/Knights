@@ -11,38 +11,46 @@ class BaseCommand(abc.ABC):
     def execute(self):
         pass
 
-    @property
-    def title(self):
-        return self.__class__.__name__
-
 
 class NewGameCommand(BaseCommand):
     """
     """
 
+    def __init__(self):
+        self.title = 'New game'
+
     def execute(self):
-        pass
+        print(f'{self.title} chosen')
 
 
 class SaveGameCommand(BaseCommand):
     """
     """
 
+    def __init__(self):
+        self.title = 'Save game'
+
     def execute(self):
-        pass
+        print(f'{self.title} chosen')
 
 
 class LoadGameCommand(BaseCommand):
     """
     """
 
+    def __init__(self):
+        self.title = 'Load game'
+
     def execute(self):
-        pass
+        print(f'{self.title} chosen')
 
 
 class ExitGameCommand(BaseCommand):
     """
     """
+
+    def __init__(self):
+        self.title = 'Exit game'
 
     def execute(self):
         exit('Game exited')
@@ -50,11 +58,9 @@ class ExitGameCommand(BaseCommand):
 
 # Menu
 
-
 class BaseMenu(abc.ABC):
-
-    def __int__(self):
-        self._commands: list[BaseCommand] = []
+    """
+    """
 
     @abc.abstractmethod
     def run(self) -> None:
@@ -78,29 +84,28 @@ class BaseMenu(abc.ABC):
     def get_user_cmd(self):
         try:
             cmd = int(input('Enter your choice: '))
+            cmd -= 1
         except ValueError:
             # TODO: Add common message
             print('Incorrect command')
-
-            # Завершить вызов команд и обработку исключений
+        else:
+            self.exec_command(cmd)
 
 
 class MainMenu(BaseMenu):
 
     def __init__(self):
         self._commands = [
-            NewGameCommand,
-            LoadGameCommand,
-            SaveGameCommand,
-            ExitGameCommand,
+            NewGameCommand(),
+            LoadGameCommand(),
+            SaveGameCommand(),
+            ExitGameCommand(),
         ]
 
     def run(self):
-        self.print_commands()
-
-    def print_commands(self):
-        for i, command in enumerate(self._commands, start=1):
-            print(f'[{i}] {command.title}')
+        while True:
+            self.print_commands()
+            self.get_user_cmd()
 
 
 # Game
