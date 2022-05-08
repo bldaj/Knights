@@ -12,6 +12,8 @@ class BaseMenu(abc.ABC):
     """
     """
 
+    commands: list | tuple = ()
+
     @abc.abstractmethod
     def run(self) -> None:
         pass
@@ -20,15 +22,17 @@ class BaseMenu(abc.ABC):
         """
         Prints available commands (self._commands param)
         """
-        for i, command in enumerate(self._commands, start=1):
+        for i, command in enumerate(self.commands, start=1):
             print(f'[{i}] {command.title}')
 
-    def exec_command(self, user_cmd):
+    def exec_command(self, user_cmd: int):
         try:
-            self._commands[user_cmd].execute()
+            command = self.commands[user_cmd]()
+            command.execute()
 
         # TODO: Specify list of exceptions
-        except Exception:
+        except Exception as e:
+            print(e)
             print('Incorrect command')
 
     def get_user_cmd(self):
@@ -43,14 +47,15 @@ class BaseMenu(abc.ABC):
 
 
 class MainMenu(BaseMenu):
+    """
+    """
 
-    def __init__(self):
-        self._commands = [
-            NewGameCommand(),
-            LoadGameCommand(),
-            SaveGameCommand(),
-            ExitGameCommand(),
-        ]
+    commands = [
+        NewGameCommand,
+        LoadGameCommand,
+        SaveGameCommand,
+        ExitGameCommand,
+    ]
 
     def run(self):
         while True:
