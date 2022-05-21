@@ -1,3 +1,3 @@
 # Knights
 
-Python console text RPG
+Python console text-based RPG
