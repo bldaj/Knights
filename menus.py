@@ -6,6 +6,7 @@ from commands import (
     SaveGameCommand,
     ExitGameCommand,
 )
+from strings import errors
 
 
 class BaseMenu(abc.ABC):
@@ -33,7 +34,7 @@ class BaseMenu(abc.ABC):
         # TODO: Specify list of exceptions
         except Exception as e:
             print(e)
-            print('Incorrect command')
+            print(errors.INCORRECT_COMMAND)
 
     def get_user_cmd(self):
         try:
@@ -41,7 +42,7 @@ class BaseMenu(abc.ABC):
             cmd -= 1
         except ValueError:
             # TODO: Add common message
-            print('Incorrect command')
+            print(errors.INCORRECT_COMMAND)
         else:
             self.exec_command(cmd)
 
