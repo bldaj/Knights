@@ -7,6 +7,11 @@ class Hero(BaseCharacter):
     """
     """
 
+    def move(self):
+        """
+        """
+        pass
+
     def attack(self):
         """
         """
