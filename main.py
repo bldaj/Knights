@@ -11,11 +11,15 @@ class CommandStack:
     Stores history of executed command
     """
 
-    def __init__(self):
+    def __init__(self, limit=5):
         self._stack = []
+        self.limit = limit
 
     def add(self, command: BaseCommand):
         self._stack.append(command)
+
+        if len(self._stack) > self.limit:
+            self._stack.remove(self._stack[0])
 
     def pop(self):
         return self._stack.pop()
