@@ -1,4 +1,4 @@
-from commands import (
+from commands.common import (
     BaseCommand,
 )
 from menus import (

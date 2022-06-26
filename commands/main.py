@@ -1,15 +1,6 @@
-import abc
-
-
-class BaseCommand(abc.ABC):
-    """
-    """
-
-    title: str = ''
-
-    @abc.abstractmethod
-    def execute(self):
-        pass
+from commands.common import (
+    BaseCommand,
+)
 
 
 class NewGameCommand(BaseCommand):
