@@ -1,7 +1,7 @@
 from commands.common import (
     BaseCommand,
 )
-from menus import (
+from menus.main_menu import (
     MainMenu,
 )
 
@@ -31,21 +31,14 @@ class Game:
     """
 
     def __init__(self):
-        self._command_stack = CommandStack()
-        self._main_menu = MainMenu()
-
-    def on_start(self):
-        self._main_menu.run()
-
-    def on_exit(self):
-        pass
+        self.main_menu = MainMenu()
 
     def start(self):
         """
         Starts main game loop
         """
-        self.on_start()
-        self.on_exit()
+        while True:
+            self.main_menu.run()
 
 
 if __name__ == '__main__':
