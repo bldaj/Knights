@@ -1,9 +1,9 @@
 from characters.common import (
-    BaseCharacter,
+    BaseHero,
 )
 
 
-class Hero(BaseCharacter):
+class Hero(BaseHero):
     """
     """
 
