@@ -1,6 +1,6 @@
 import abc
 
-from characters.common import (
+from characters.base import (
     BaseCharacter,
 )
 
