@@ -5,6 +5,6 @@ from characters.common import (
 )
 
 
-class BaseNPC(BaseCharacter, abc.ABC):
+class BaseEnemy(BaseCharacter, abc.ABC):
     """
     """
